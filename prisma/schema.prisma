@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String?
+  image       String?
+  published   Boolean  @default(false)
+  modules     Json     @default("[]")
+  lessons     Lesson[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lesson {
+  id        Int      @id @default(autoincrement())
+  courseId  Int
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  slug      String
+  order     Int      @default(0)
+  modules   Json     @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([courseId, slug])
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  date        DateTime
+  location    String?
+  description String?
+  image       String?
+  published   Boolean  @default(false)
+  modules     Json     @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Staff {
+  id           Int      @id @default(autoincrement())
+  name         String
+  position     String
+  department   String?
+  bio          String?
+  image        String?
+  isManagement Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Document {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String
+  fileUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
