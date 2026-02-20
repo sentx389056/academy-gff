@@ -142,7 +142,7 @@ export default function ModuleBuilder({ value, onChange }: Props) {
                 key={module.id}
                 className={`border rounded-xl overflow-hidden transition-all ${
                   isEditing
-                    ? "border-[#8f1a1c] shadow-sm"
+                    ? "border-red-800 shadow-sm"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
@@ -208,7 +208,7 @@ export default function ModuleBuilder({ value, onChange }: Props) {
       <button
         type="button"
         onClick={() => setShowPicker(!showPicker)}
-        className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 hover:border-[#8f1a1c] rounded-xl py-4 text-sm text-gray-500 hover:text-[#8f1a1c] transition-colors"
+        className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 hover:border-red-800 rounded-xl py-4 text-sm text-gray-500 hover:text-red-800 transition-colors"
       >
         <span className="text-lg">+</span>
         Добавить модуль
@@ -226,11 +226,11 @@ export default function ModuleBuilder({ value, onChange }: Props) {
                 key={def.type}
                 type="button"
                 onClick={() => addModule(def)}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-gray-200 hover:border-[#8f1a1c] hover:bg-[#8f1a1c]/5 transition-all group text-center"
+                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-gray-200 hover:border-red-800 hover:bg-red-800/5 transition-all group text-center"
               >
                 <span className="text-2xl">{def.icon}</span>
                 <div>
-                  <div className="text-xs font-semibold text-gray-700 group-hover:text-[#8f1a1c]">
+                  <div className="text-xs font-semibold text-gray-700 group-hover:text-red-800">
                     {def.label}
                   </div>
                   <div className="text-xs text-gray-400 mt-0.5">{def.description}</div>
@@ -274,7 +274,7 @@ function ModuleEditor({
             <select
               value={String(content.level || 2)}
               onChange={(e) => set("level", parseInt(e.target.value))}
-              className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c] w-32"
+              className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800 w-32"
             >
               <option value="1">H1 — Главный</option>
               <option value="2">H2 — Раздел</option>
@@ -288,7 +288,7 @@ function ModuleEditor({
               value={String(content.text || "")}
               onChange={(e) => set("text", e.target.value)}
               placeholder="Введите заголовок..."
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
         </div>
@@ -303,7 +303,7 @@ function ModuleEditor({
             onChange={(e) => set("text", e.target.value)}
             rows={4}
             placeholder="Введите текст абзаца..."
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c] resize-y"
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800 resize-y"
           />
         </div>
       );
@@ -324,7 +324,7 @@ function ModuleEditor({
                 onClick={() => onChange({ ...content, imgMode: opt.key, url: "" })}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                   imgMode === opt.key
-                    ? "bg-white text-[#8f1a1c] shadow-sm"
+                    ? "bg-white text-red-800 shadow-sm"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -347,7 +347,7 @@ function ModuleEditor({
                 value={String(content.url || "")}
                 onChange={(e) => set("url", e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
               />
               {typeof content.url === "string" && content.url && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -363,7 +363,7 @@ function ModuleEditor({
               value={String(content.alt || "")}
               onChange={(e) => set("alt", e.target.value)}
               placeholder="Описание изображения"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
           <div>
@@ -373,7 +373,7 @@ function ModuleEditor({
               value={String(content.caption || "")}
               onChange={(e) => set("caption", e.target.value)}
               placeholder="Подпись под изображением"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
         </div>
@@ -397,7 +397,7 @@ function ModuleEditor({
                 onClick={() => onChange({ ...content, videoMode: opt.key, url: "", iframeSrc: "" })}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                   videoMode === opt.key
-                    ? "bg-white text-[#8f1a1c] shadow-sm"
+                    ? "bg-white text-red-800 shadow-sm"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -414,7 +414,7 @@ function ModuleEditor({
                 value={String(content.iframeSrc || "")}
                 onChange={(e) => set("iframeSrc", e.target.value)}
                 placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
               />
               <p className="text-xs text-gray-400 mt-1">
                 YouTube: откройте видео → Поделиться → Встроить → скопируйте src из iframe
@@ -443,7 +443,7 @@ function ModuleEditor({
                 value={String(content.url || "")}
                 onChange={(e) => set("url", e.target.value)}
                 placeholder="https://example.com/video.mp4"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
               />
               {typeof content.url === "string" && content.url && (
                 <video src={content.url} controls className="mt-2 w-full rounded-lg max-h-48" />
@@ -464,7 +464,7 @@ function ModuleEditor({
               onChange={(e) => set("text", e.target.value)}
               rows={3}
               placeholder="Введите цитату..."
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
           <div>
@@ -474,7 +474,7 @@ function ModuleEditor({
               value={String(content.author || "")}
               onChange={(e) => set("author", e.target.value)}
               placeholder="Имя автора (необязательно)"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
         </div>
@@ -492,7 +492,7 @@ function ModuleEditor({
                 type="radio"
                 checked={!ordered}
                 onChange={() => set("ordered", false)}
-                className="accent-[#8f1a1c]"
+                className="accent-red-800"
               />
               Маркированный
             </label>
@@ -501,7 +501,7 @@ function ModuleEditor({
                 type="radio"
                 checked={ordered}
                 onChange={() => set("ordered", true)}
-                className="accent-[#8f1a1c]"
+                className="accent-red-800"
               />
               Нумерованный
             </label>
@@ -521,7 +521,7 @@ function ModuleEditor({
                     set("items", newItems);
                   }}
                   placeholder={`Пункт ${i + 1}`}
-                  className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                  className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-red-800"
                 />
                 <button
                   type="button"
@@ -537,7 +537,7 @@ function ModuleEditor({
           <button
             type="button"
             onClick={() => set("items", [...items, ""])}
-            className="text-xs text-[#8f1a1c] hover:underline"
+            className="text-xs text-red-800 hover:underline"
           >
             + Добавить пункт
           </button>
@@ -565,7 +565,7 @@ function ModuleEditor({
                 onClick={() => onChange({ ...content, fileMode: opt.key, url: "", name: "", size: "" })}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                   fileMode === opt.key
-                    ? "bg-white text-[#8f1a1c] shadow-sm"
+                    ? "bg-white text-red-800 shadow-sm"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -594,7 +594,7 @@ function ModuleEditor({
                 value={String(content.url || "")}
                 onChange={(e) => set("url", e.target.value)}
                 placeholder="https://..."
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
               />
             </div>
           )}
@@ -606,7 +606,7 @@ function ModuleEditor({
               value={String(content.name || "")}
               onChange={(e) => set("name", e.target.value)}
               placeholder="Например: Программа курса.pdf"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
           <div>
@@ -616,7 +616,7 @@ function ModuleEditor({
               value={String(content.size || "")}
               onChange={(e) => set("size", e.target.value)}
               placeholder="Например: 2.4 МБ"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-800"
             />
           </div>
         </div>

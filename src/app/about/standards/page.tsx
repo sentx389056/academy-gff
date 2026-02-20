@@ -1,4 +1,6 @@
+export const dynamic = "force-dynamic";
 import SimpleInfoPage from "@/components/SimpleInfoPage";
+import PageDocuments from "@/components/PageDocuments";
 
 export const metadata = {
   title: "Образовательные стандарты — Академия Госфильмофонда России",
@@ -21,7 +23,7 @@ export default function StandardsPage() {
           образования и профессиональными стандартами.
         </p>
         <section>
-          <h2 className="text-xl font-bold text-[#1d1d1d] mb-4">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
             Реализуемые программы
           </h2>
           <div className="space-y-4">
@@ -33,16 +35,17 @@ export default function StandardsPage() {
             ].map((prog) => (
               <div key={prog.code} className="border border-gray-200 rounded-xl p-5">
                 <div className="flex items-start gap-4">
-                  <span className="text-xs font-mono bg-[#8f1a1c]/10 text-[#8f1a1c] px-2 py-1 rounded">
+                  <span className="text-xs font-mono bg-red-800/10 text-red-800 px-2 py-1 rounded">
                     {prog.code}
                   </span>
-                  <span className="font-medium text-[#1d1d1d]">{prog.name}</span>
+                  <span className="font-medium text-slate-900">{prog.name}</span>
                 </div>
               </div>
             ))}
           </div>
         </section>
       </div>
+      <PageDocuments page="standards" title="Прикреплённые файлы" />
     </SimpleInfoPage>
   );
 }

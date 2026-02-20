@@ -64,10 +64,10 @@ export default function NewEventPage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-6">
-        <Link href="/admin/events" className="text-sm text-gray-500 hover:text-[#8f1a1c]">
+        <Link href="/admin/events" className="text-sm text-gray-500 hover:text-red-800">
           ← Назад к событиям
         </Link>
-        <h1 className="text-xl font-bold text-[#1d1d1d] mt-2">Создать новое событие</h1>
+        <h1 className="text-xl font-bold text-slate-900 mt-2">Создать новое событие</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -84,7 +84,7 @@ export default function NewEventPage() {
               type="text"
               value={title}
               onChange={(e) => handleTitleChange(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
               placeholder="Например: Кинематограф будущего: VR и AI в кино"
               required
             />
@@ -100,7 +100,7 @@ export default function NewEventPage() {
                 type="text"
                 value={slug}
                 onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }}
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
                 required
               />
             </div>
@@ -115,7 +115,7 @@ export default function NewEventPage() {
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
                 required
               />
             </div>
@@ -127,7 +127,7 @@ export default function NewEventPage() {
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
                 placeholder="Например: Большой зал, корпус А"
               />
             </div>
@@ -139,7 +139,7 @@ export default function NewEventPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c] resize-none"
+              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none"
               placeholder="Краткое описание события..."
             />
           </div>
@@ -150,7 +150,7 @@ export default function NewEventPage() {
               type="url"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]"
+              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
               placeholder="https://..."
             />
           </div>
@@ -175,7 +175,7 @@ export default function NewEventPage() {
         </div>
 
         <div className="flex gap-3">
-          <button type="submit" disabled={loading} className="bg-[#8f1a1c] hover:bg-[#7a1518] disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
+          <button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
             {loading ? "Сохранение..." : "Создать событие"}
           </button>
           <Link href="/admin/events" className="border border-gray-200 text-gray-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 text-sm">

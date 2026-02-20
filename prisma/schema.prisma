@@ -12,6 +12,13 @@ enum Role {
   ADMIN
 }
 
+enum ApplicationStatus {
+  NEW
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -23,16 +30,22 @@ model User {
 }
 
 model Course {
-  id          Int      @id @default(autoincrement())
-  title       String
-  slug        String   @unique
-  description String?
-  image       String?
-  published   Boolean  @default(false)
-  modules     Json     @default("[]")
-  lessons     Lesson[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int           @id @default(autoincrement())
+  title        String
+  slug         String        @unique
+  description  String?
+  image        String?
+  published    Boolean       @default(false)
+  modules      Json          @default("[]")
+  lessons      Lesson[]
+  applications Application[]
+  format       String?       // Онлайн / Очно / Смешанный
+  duration     String?       // 36 ак.ч / 3 дня / 72 ч
+  price        String?       // 17 500 ₽/год
+  startDate    DateTime?
+  endDate      DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Lesson {
@@ -50,17 +63,18 @@ model Lesson {
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  title       String
-  slug        String   @unique
-  date        DateTime
-  location    String?
-  description String?
-  image       String?
-  published   Boolean  @default(false)
-  modules     Json     @default("[]")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int           @id @default(autoincrement())
+  title        String
+  slug         String        @unique
+  date         DateTime
+  location     String?
+  description  String?
+  image        String?
+  published    Boolean       @default(false)
+  modules      Json          @default("[]")
+  applications Application[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Staff {
@@ -80,7 +94,34 @@ model Document {
   id        Int      @id @default(autoincrement())
   title     String
   category  String
+  page      String?  // about page slug: "material", "scholarships", "paid-services", etc.
   fileUrl   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Application {
+  id       Int               @id @default(autoincrement())
+  type     String            // "course", "event", "contact"
+  status   ApplicationStatus @default(NEW)
+  name     String
+  email    String
+  phone    String?
+  message  String?
+  workplace String?
+  jobTitle String?
+  courseId Int?
+  course   Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  eventId  Int?
+  event    Event?            @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  meta     Json              @default("{}")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
 }

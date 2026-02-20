@@ -16,12 +16,12 @@ export default async function AdminStaffPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-[#1d1d1d]">Сотрудники</h1>
+          <h1 className="text-xl font-bold text-slate-900">Сотрудники</h1>
           <p className="text-sm text-gray-500">{staff.length} человек</p>
         </div>
         <Link
           href="/admin/staff/new"
-          className="flex items-center gap-2 bg-[#8f1a1c] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#7a1518] transition-colors"
+          className="flex items-center gap-2 bg-red-800 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-red-900 transition-colors"
         >
           + Добавить сотрудника
         </Link>
@@ -49,7 +49,7 @@ export default async function AdminStaffPage() {
         <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
           <div className="text-4xl mb-3">👤</div>
           <p className="text-gray-500 mb-4">Нет сотрудников</p>
-          <Link href="/admin/staff/new" className="inline-flex items-center gap-2 bg-[#8f1a1c] text-white text-sm px-4 py-2 rounded-lg">
+          <Link href="/admin/staff/new" className="inline-flex items-center gap-2 bg-red-800 text-white text-sm px-4 py-2 rounded-lg">
             + Добавить
           </Link>
         </div>
@@ -88,7 +88,7 @@ function StaffTable({ people }: { people: Person[] }) {
               <td className="px-4 py-3 text-gray-400 text-xs">{person.department || "—"}</td>
               <td className="px-4 py-3 text-center text-gray-400">{person.order}</td>
               <td className="px-4 py-3">
-                <Link href={`/admin/staff/${person.id}`} className="text-[#8f1a1c] hover:underline text-xs font-medium">
+                <Link href={`/admin/staff/${person.id}`} className="text-red-800 hover:underline text-xs font-medium">
                   Изменить
                 </Link>
               </td>

@@ -7,10 +7,11 @@ export const metadata = {
 };
 
 export default async function AdminDashboard() {
-  const [coursesCount, eventsCount, staffCount] = await Promise.all([
+  const [coursesCount, eventsCount, staffCount, applicationsCount] = await Promise.all([
     prisma.course.count(),
     prisma.event.count(),
     prisma.staff.count(),
+    prisma.application.count(),
   ]);
 
   const recentCourses = await prisma.course.findMany({
@@ -26,18 +27,19 @@ export default async function AdminDashboard() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1d1d1d]">Панель управления</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Панель управления</h1>
         <p className="text-gray-500 text-sm mt-1">
           Академия Госфильмофонда России
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Курсов", value: coursesCount, href: "/admin/courses", color: "bg-blue-500" },
           { label: "События", value: eventsCount, href: "/admin/events", color: "bg-green-500" },
-          { label: "Сотрудников", value: staffCount, href: "/admin/staff", color: "bg-[#8f1a1c]" },
+          { label: "Сотрудников", value: staffCount, href: "/admin/staff", color: "bg-red-800" },
+          { label: "Заявки", value: applicationsCount, href: "/admin/applications", color: "bg-purple-600" },
         ].map((stat) => (
           <Link key={stat.label} href={stat.href}>
             <div className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition-shadow flex items-center gap-4">
@@ -45,7 +47,7 @@ export default async function AdminDashboard() {
                 <span className="text-white text-lg font-bold">{stat.value}</span>
               </div>
               <div>
-                <div className="text-2xl font-bold text-[#1d1d1d]">{stat.value}</div>
+                <div className="text-2xl font-bold text-slate-900">{stat.value}</div>
                 <div className="text-sm text-gray-500">{stat.label}</div>
               </div>
             </div>
@@ -55,11 +57,11 @@ export default async function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="mb-8">
-        <h2 className="text-base font-semibold text-[#1d1d1d] mb-4">Быстрые действия</h2>
+        <h2 className="text-base font-semibold text-slate-900 mb-4">Быстрые действия</h2>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/courses/new"
-            className="flex items-center gap-2 bg-[#8f1a1c] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#7a1518] transition-colors"
+            className="flex items-center gap-2 bg-red-800 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-red-900 transition-colors"
           >
             + Новый курс
           </Link>
@@ -82,8 +84,8 @@ export default async function AdminDashboard() {
         {/* Recent Courses */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#1d1d1d]">Последние курсы</h2>
-            <Link href="/admin/courses" className="text-xs text-[#8f1a1c] hover:underline">
+            <h2 className="font-semibold text-slate-900">Последние курсы</h2>
+            <Link href="/admin/courses" className="text-xs text-red-800 hover:underline">
               Все →
             </Link>
           </div>
@@ -93,7 +95,7 @@ export default async function AdminDashboard() {
                 <li key={course.id} className="flex items-center justify-between">
                   <Link
                     href={`/admin/courses/${course.id}`}
-                    className="text-sm text-gray-700 hover:text-[#8f1a1c] transition-colors truncate"
+                    className="text-sm text-gray-700 hover:text-red-800 transition-colors truncate"
                   >
                     {course.title}
                   </Link>
@@ -117,8 +119,8 @@ export default async function AdminDashboard() {
         {/* Recent Events */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#1d1d1d]">Последние события</h2>
-            <Link href="/admin/events" className="text-xs text-[#8f1a1c] hover:underline">
+            <h2 className="font-semibold text-slate-900">Последние события</h2>
+            <Link href="/admin/events" className="text-xs text-red-800 hover:underline">
               Все →
             </Link>
           </div>
@@ -128,7 +130,7 @@ export default async function AdminDashboard() {
                 <li key={event.id} className="flex items-center justify-between gap-2">
                   <Link
                     href={`/admin/events/${event.id}`}
-                    className="text-sm text-gray-700 hover:text-[#8f1a1c] transition-colors truncate"
+                    className="text-sm text-gray-700 hover:text-red-800 transition-colors truncate"
                   >
                     {event.title}
                   </Link>

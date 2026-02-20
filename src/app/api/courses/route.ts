@@ -24,14 +24,21 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { title, slug, description, image, published, modules } = body;
+    const { title, slug, description, image, published, modules, format, duration, price, startDate, endDate } = body;
 
     if (!title || !slug) {
       return NextResponse.json({ error: "Название и slug обязательны" }, { status: 400 });
     }
 
     const course = await prisma.course.create({
-      data: { title, slug, description, image, published: published ?? false, modules: modules ?? [] },
+      data: {
+        title, slug, description, image, published: published ?? false, modules: modules ?? [],
+        format: format || null,
+        duration: duration || null,
+        price: price || null,
+        startDate: startDate ? new Date(startDate) : null,
+        endDate: endDate ? new Date(endDate) : null,
+      },
     });
 
     return NextResponse.json(course, { status: 201 });

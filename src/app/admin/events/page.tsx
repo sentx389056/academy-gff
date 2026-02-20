@@ -13,12 +13,12 @@ export default async function AdminEventsPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-[#1d1d1d]">События</h1>
+          <h1 className="text-xl font-bold text-slate-900">События</h1>
           <p className="text-sm text-gray-500">{events.length} событий</p>
         </div>
         <Link
           href="/admin/events/new"
-          className="flex items-center gap-2 bg-[#8f1a1c] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#7a1518] transition-colors"
+          className="flex items-center gap-2 bg-red-800 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-red-900 transition-colors"
         >
           + Новое событие
         </Link>
@@ -53,7 +53,7 @@ export default async function AdminEventsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <Link href={`/admin/events/${event.id}`} className="text-[#8f1a1c] hover:underline text-xs font-medium">
+                    <Link href={`/admin/events/${event.id}`} className="text-red-800 hover:underline text-xs font-medium">
                       Редактировать
                     </Link>
                   </td>
@@ -65,7 +65,7 @@ export default async function AdminEventsPage() {
           <div className="text-center py-16">
             <div className="text-4xl mb-3">🎬</div>
             <p className="text-gray-500 mb-4">Нет событий</p>
-            <Link href="/admin/events/new" className="inline-flex items-center gap-2 bg-[#8f1a1c] text-white text-sm px-4 py-2 rounded-lg">
+            <Link href="/admin/events/new" className="inline-flex items-center gap-2 bg-red-800 text-white text-sm px-4 py-2 rounded-lg">
               + Создать событие
             </Link>
           </div>

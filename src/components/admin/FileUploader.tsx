@@ -150,7 +150,7 @@ export default function FileUploader({ accept, onUploaded, currentUrl, compact =
         onClick={() => !uploading && inputRef.current?.click()}
         className={`
           relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all
-          ${dragging ? "border-[#8f1a1c] bg-[#8f1a1c]/5" : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"}
+          ${dragging ? "border-red-800 bg-red-800/5" : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"}
           ${uploading ? "pointer-events-none" : ""}
         `}
       >
@@ -167,7 +167,7 @@ export default function FileUploader({ accept, onUploaded, currentUrl, compact =
             <div className="text-sm text-gray-600">Загрузка... {progress}%</div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-[#8f1a1c] h-2 rounded-full transition-all duration-200"
+                className="bg-red-800 h-2 rounded-full transition-all duration-200"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -184,7 +184,7 @@ export default function FileUploader({ accept, onUploaded, currentUrl, compact =
             <p className="text-xs text-gray-400">{formatSize(uploaded.size)}</p>
             <button
               type="button"
-              className="text-xs text-[#8f1a1c] hover:underline"
+              className="text-xs text-red-800 hover:underline"
               onClick={(e) => { e.stopPropagation(); setUploaded(null); inputRef.current?.click(); }}
             >
               Заменить
@@ -206,7 +206,7 @@ export default function FileUploader({ accept, onUploaded, currentUrl, compact =
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
             <p className="text-sm text-gray-500">
-              Перетащите файл или <span className="text-[#8f1a1c] font-medium">нажмите для выбора</span>
+              Перетащите файл или <span className="text-red-800 font-medium">нажмите для выбора</span>
             </p>
             <p className="text-xs text-gray-400">{ACCEPT_HINT[accept]}</p>
           </div>

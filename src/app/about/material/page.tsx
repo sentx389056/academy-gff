@@ -1,4 +1,6 @@
+export const dynamic = "force-dynamic";
 import SimpleInfoPage from "@/components/SimpleInfoPage";
+import PageDocuments from "@/components/PageDocuments";
 
 export const metadata = {
   title: "Материально-техническое обеспечение — Академия Госфильмофонда России",
@@ -16,7 +18,7 @@ export default function MaterialPage() {
     >
       <div className="space-y-6 text-gray-700 leading-relaxed max-w-4xl">
         <section>
-          <h2 className="text-xl font-bold text-[#1d1d1d] mb-4">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
             Учебные помещения
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -29,7 +31,7 @@ export default function MaterialPage() {
               { name: "Медиатека", desc: "Доступ к архиву Госфильмофонда и специализированным базам данных" },
             ].map((item) => (
               <div key={item.name} className="border border-gray-200 rounded-xl p-5">
-                <h3 className="font-semibold text-[#1d1d1d] mb-1">{item.name}</h3>
+                <h3 className="font-semibold text-slate-900 mb-1">{item.name}</h3>
                 <p className="text-sm">{item.desc}</p>
               </div>
             ))}
@@ -37,7 +39,7 @@ export default function MaterialPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-[#1d1d1d] mb-4">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
             Доступная среда
           </h2>
           <p>
@@ -47,6 +49,7 @@ export default function MaterialPage() {
           </p>
         </section>
       </div>
+      <PageDocuments page="material" title="Прикреплённые файлы" />
     </SimpleInfoPage>
   );
 }

@@ -90,8 +90,8 @@ export default function EditEventPage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href="/admin/events" className="text-sm text-gray-500 hover:text-[#8f1a1c]">← Назад к событиям</Link>
-          <h1 className="text-xl font-bold text-[#1d1d1d] mt-2">Редактировать событие</h1>
+          <Link href="/admin/events" className="text-sm text-gray-500 hover:text-red-800">← Назад к событиям</Link>
+          <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать событие</h1>
         </div>
         <div className="flex gap-2">
           <Link href={`/events/${slug}`} target="_blank" className="text-sm border border-gray-200 text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-50">Просмотр →</Link>
@@ -106,32 +106,32 @@ export default function EditEventPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Название</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" required />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
             <div className="flex gap-2 items-center">
               <span className="text-sm text-gray-400">/events/</span>
-              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" required />
+              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Дата</label>
-              <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" required />
+              <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Место</label>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" />
+              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Описание</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c] resize-none" />
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" />
+            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
           </div>
           <div className="flex items-center gap-3">
             <label className="relative inline-flex items-center cursor-pointer">
@@ -151,7 +151,7 @@ export default function EditEventPage() {
         </div>
 
         <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="bg-[#8f1a1c] hover:bg-[#7a1518] disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
+          <button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
             {saving ? "Сохранение..." : "Сохранить"}
           </button>
         </div>

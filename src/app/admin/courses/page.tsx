@@ -14,12 +14,12 @@ export default async function AdminCoursesPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-[#1d1d1d]">Курсы</h1>
+          <h1 className="text-xl font-bold text-slate-900">Курсы</h1>
           <p className="text-sm text-gray-500">{courses.length} курсов всего</p>
         </div>
         <Link
           href="/admin/courses/new"
-          className="flex items-center gap-2 bg-[#8f1a1c] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#7a1518] transition-colors"
+          className="flex items-center gap-2 bg-red-800 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-red-900 transition-colors"
         >
           + Новый курс
         </Link>
@@ -62,7 +62,7 @@ export default async function AdminCoursesPage() {
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/courses/${course.id}`}
-                      className="text-[#8f1a1c] hover:underline text-xs font-medium"
+                      className="text-red-800 hover:underline text-xs font-medium"
                     >
                       Редактировать
                     </Link>
@@ -77,7 +77,7 @@ export default async function AdminCoursesPage() {
             <p className="text-gray-500 mb-4">Нет курсов. Создайте первый!</p>
             <Link
               href="/admin/courses/new"
-              className="inline-flex items-center gap-2 bg-[#8f1a1c] text-white text-sm px-4 py-2 rounded-lg"
+              className="inline-flex items-center gap-2 bg-red-800 text-white text-sm px-4 py-2 rounded-lg"
             >
               + Создать курс
             </Link>

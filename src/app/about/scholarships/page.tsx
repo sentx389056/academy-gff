@@ -1,4 +1,6 @@
+export const dynamic = "force-dynamic";
 import SimpleInfoPage from "@/components/SimpleInfoPage";
+import PageDocuments from "@/components/PageDocuments";
 
 export const metadata = {
   title: "Стипендии и меры поддержки — Академия Госфильмофонда России",
@@ -27,12 +29,13 @@ export default function ScholarshipsPage() {
             { title: "Льготное питание", desc: "Дотации на питание для льготных категорий обучающихся" },
           ].map((item) => (
             <div key={item.title} className="border border-gray-200 rounded-xl p-5">
-              <h3 className="font-semibold text-[#8f1a1c] mb-2">{item.title}</h3>
+              <h3 className="font-semibold text-red-800 mb-2">{item.title}</h3>
               <p className="text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
       </div>
+      <PageDocuments page="scholarships" title="Прикреплённые файлы" />
     </SimpleInfoPage>
   );
 }

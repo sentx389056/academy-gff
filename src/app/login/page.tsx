@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +19,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       const user = await login(email, password);
       if (user.role === "ADMIN") {
@@ -33,68 +34,58 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#f8fafc] px-4">
+    <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-[#8f1a1c] rounded-xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold text-lg">АГФ</span>
+        <div className="bg-white rounded-xl shadow-md p-8 border border-slate-100">
+          <h1 className="text-xl font-semibold text-slate-900 mb-6">
+            Привет, с возвращением!
+          </h1>
+
+          {error && (
+            <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm mb-4">
+              {error}
             </div>
-            <h1 className="text-2xl font-bold text-[#1d1d1d]">Вход в систему</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              Академия Госфильмофонда России
-            </p>
-          </div>
+          )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {error && (
-              <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">
-                {error}
-              </div>
-            )}
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Имя пользователя или email"
+              required
+              className="border-slate-200"
+            />
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Пароль"
+              required
+              className="border-slate-200"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c] focus:ring-1 focus:ring-[#8f1a1c]"
-                placeholder="admin@academy-gff.ru"
-                required
-              />
+            <div className="flex items-center justify-end">
+              <Link href="#" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
+                Забыли пароль?
+              </Link>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Пароль
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c] focus:ring-1 focus:ring-[#8f1a1c]"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#8f1a1c] hover:bg-[#7a1518] disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors mt-2"
+              className="w-full bg-red-800 hover:bg-red-900 text-white font-semibold py-3 rounded-lg mt-1 h-auto"
             >
               {loading ? "Вход..." : "Войти"}
-            </button>
+            </Button>
           </form>
 
-          <div className="text-center mt-6">
-            <Link href="/" className="text-sm text-gray-500 hover:text-[#8f1a1c]">
-              ← На главную
+          <p className="text-center text-sm text-slate-500 mt-5">
+            У вас еще нет учетной записи?{" "}
+            <Link href="#" className="text-red-800 font-medium hover:underline">
+              Зарегистрироваться
             </Link>
-          </div>
+          </p>
         </div>
       </div>
     </div>

@@ -30,12 +30,19 @@ export async function PUT(
 
   const { id } = await params;
   const body = await request.json();
-  const { title, slug, description, image, published, modules } = body;
+  const { title, slug, description, image, published, modules, format, duration, price, startDate, endDate } = body;
 
   try {
     const course = await prisma.course.update({
       where: { id: parseInt(id) },
-      data: { title, slug, description, image, published, modules },
+      data: {
+        title, slug, description, image, published, modules,
+        format: format || null,
+        duration: duration || null,
+        price: price || null,
+        startDate: startDate ? new Date(startDate) : null,
+        endDate: endDate ? new Date(endDate) : null,
+      },
     });
     return NextResponse.json(course);
   } catch (error) {

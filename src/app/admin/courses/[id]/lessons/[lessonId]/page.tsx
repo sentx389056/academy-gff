@@ -72,10 +72,10 @@ export default function EditLessonPage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href={`/admin/courses/${courseId}`} className="text-sm text-gray-500 hover:text-[#8f1a1c]">
+          <Link href={`/admin/courses/${courseId}`} className="text-sm text-gray-500 hover:text-red-800">
             ← Назад к курсу
           </Link>
-          <h1 className="text-xl font-bold text-[#1d1d1d] mt-2">Редактировать урок</h1>
+          <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать урок</h1>
         </div>
         <button
           onClick={handleDelete}
@@ -92,15 +92,15 @@ export default function EditLessonPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Название</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" required />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-            <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" required />
+            <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Порядок</label>
-            <input type="number" value={order} onChange={(e) => setOrder(parseInt(e.target.value) || 0)} className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#8f1a1c]" min={0} />
+            <input type="number" value={order} onChange={(e) => setOrder(parseInt(e.target.value) || 0)} className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" min={0} />
           </div>
         </div>
 
@@ -111,7 +111,7 @@ export default function EditLessonPage() {
         </div>
 
         <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="bg-[#8f1a1c] hover:bg-[#7a1518] disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
+          <button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
             {saving ? "Сохранение..." : "Сохранить"}
           </button>
         </div>

@@ -1,4 +1,6 @@
+export const dynamic = "force-dynamic";
 import SimpleInfoPage from "@/components/SimpleInfoPage";
+import PageDocuments from "@/components/PageDocuments";
 
 export const metadata = {
   title: "Платные образовательные услуги — Академия Госфильмофонда России",
@@ -22,11 +24,11 @@ export default function PaidServicesPage() {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="bg-[#f1f5f9]">
-                <th className="text-left p-3 border border-gray-200 font-semibold text-[#1d1d1d]">Программа</th>
-                <th className="text-left p-3 border border-gray-200 font-semibold text-[#1d1d1d]">Форма обучения</th>
-                <th className="text-left p-3 border border-gray-200 font-semibold text-[#1d1d1d]">Срок</th>
-                <th className="text-left p-3 border border-gray-200 font-semibold text-[#1d1d1d]">Стоимость (год)</th>
+              <tr className="bg-slate-100">
+                <th className="text-left p-3 border border-gray-200 font-semibold text-slate-900">Программа</th>
+                <th className="text-left p-3 border border-gray-200 font-semibold text-slate-900">Форма обучения</th>
+                <th className="text-left p-3 border border-gray-200 font-semibold text-slate-900">Срок</th>
+                <th className="text-left p-3 border border-gray-200 font-semibold text-slate-900">Стоимость (год)</th>
               </tr>
             </thead>
             <tbody>
@@ -36,11 +38,11 @@ export default function PaidServicesPage() {
                 { name: "Звукорежиссура", form: "Очная", duration: "4 года", price: "240 000 руб." },
                 { name: "Кинодокументалистика", form: "Очная/Заочная", duration: "2 года", price: "180 000 руб." },
               ].map((row) => (
-                <tr key={row.name} className="hover:bg-[#f8fafc]">
+                <tr key={row.name} className="hover:bg-slate-50">
                   <td className="p-3 border border-gray-200">{row.name}</td>
                   <td className="p-3 border border-gray-200">{row.form}</td>
                   <td className="p-3 border border-gray-200">{row.duration}</td>
-                  <td className="p-3 border border-gray-200 font-medium text-[#8f1a1c]">{row.price}</td>
+                  <td className="p-3 border border-gray-200 font-medium text-red-800">{row.price}</td>
                 </tr>
               ))}
             </tbody>
@@ -51,6 +53,7 @@ export default function PaidServicesPage() {
           свяжитесь с приёмной комиссией.
         </p>
       </div>
+      <PageDocuments page="paid-services" title="Прикреплённые файлы" />
     </SimpleInfoPage>
   );
 }

@@ -1,4 +1,6 @@
+export const dynamic = "force-dynamic";
 import SimpleInfoPage from "@/components/SimpleInfoPage";
+import PageDocuments from "@/components/PageDocuments";
 
 export const metadata = {
   title: "Организация питания — Академия Госфильмофонда России",
@@ -20,24 +22,24 @@ export default function FoodPage() {
           в соответствии с санитарно-эпидемиологическими требованиями.
         </p>
         <section>
-          <h2 className="text-xl font-bold text-[#1d1d1d] mb-4">Столовая</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-4">Столовая</h2>
           <div className="border border-gray-200 rounded-xl p-5 space-y-3">
             <div className="flex gap-4 text-sm">
-              <div className="font-semibold text-[#1d1d1d] w-32 flex-shrink-0">Расположение:</div>
+              <div className="font-semibold text-slate-900 w-32 flex-shrink-0">Расположение:</div>
               <div>Главный корпус, 1 этаж</div>
             </div>
             <div className="flex gap-4 text-sm">
-              <div className="font-semibold text-[#1d1d1d] w-32 flex-shrink-0">Режим работы:</div>
+              <div className="font-semibold text-slate-900 w-32 flex-shrink-0">Режим работы:</div>
               <div>Пн–Пт: 08:00–19:00</div>
             </div>
             <div className="flex gap-4 text-sm">
-              <div className="font-semibold text-[#1d1d1d] w-32 flex-shrink-0">Вместимость:</div>
+              <div className="font-semibold text-slate-900 w-32 flex-shrink-0">Вместимость:</div>
               <div>80 посадочных мест</div>
             </div>
           </div>
         </section>
         <section>
-          <h2 className="text-xl font-bold text-[#1d1d1d] mb-4">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
             Льготное питание
           </h2>
           <p className="text-sm">
@@ -47,6 +49,7 @@ export default function FoodPage() {
           </p>
         </section>
       </div>
+      <PageDocuments page="food" title="Прикреплённые файлы" />
     </SimpleInfoPage>
   );
 }

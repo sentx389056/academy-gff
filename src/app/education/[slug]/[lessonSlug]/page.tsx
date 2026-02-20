@@ -29,7 +29,7 @@ export default async function LessonPage({ params }: Props) {
 
   return (
     <>
-      <section className="bg-[#0f172a] py-10 text-white">
+      <section className="bg-slate-900 py-10 text-white">
         <div className="mx-auto max-w-[1170px] px-4">
           <nav className="text-xs text-gray-400 mb-2">
             <Link href="/" className="hover:text-white">Главная</Link>
@@ -48,8 +48,8 @@ export default async function LessonPage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1 order-2 lg:order-1">
-            <div className="bg-[#f8fafc] rounded-xl p-4 sticky top-24">
-              <h3 className="font-semibold text-sm text-[#1d1d1d] mb-3">
+            <div className="bg-slate-50 rounded-xl p-4 sticky top-24">
+              <h3 className="font-semibold text-sm text-slate-900 mb-3">
                 {course.title}
               </h3>
               <ol className="flex flex-col gap-1">
@@ -59,8 +59,8 @@ export default async function LessonPage({ params }: Props) {
                       href={`/education/${course.slug}/${l.slug}`}
                       className={`flex items-center gap-2 p-2 rounded-lg text-sm transition-colors ${
                         l.id === lesson.id
-                          ? "bg-[#8f1a1c] text-white"
-                          : "hover:bg-white text-gray-600 hover:text-[#8f1a1c]"
+                          ? "bg-red-800 text-white"
+                          : "hover:bg-white text-gray-600 hover:text-red-800"
                       }`}
                     >
                       <span className="w-5 h-5 flex-shrink-0 rounded-full border border-current text-xs flex items-center justify-center">
@@ -89,7 +89,7 @@ export default async function LessonPage({ params }: Props) {
               {prevLesson ? (
                 <Link
                   href={`/education/${course.slug}/${prevLesson.slug}`}
-                  className="flex items-center gap-2 text-sm text-[#8f1a1c] hover:underline"
+                  className="flex items-center gap-2 text-sm text-red-800 hover:underline"
                 >
                   ← {prevLesson.title}
                 </Link>
@@ -99,14 +99,14 @@ export default async function LessonPage({ params }: Props) {
               {nextLesson ? (
                 <Link
                   href={`/education/${course.slug}/${nextLesson.slug}`}
-                  className="flex items-center gap-2 text-sm text-[#8f1a1c] hover:underline"
+                  className="flex items-center gap-2 text-sm text-red-800 hover:underline"
                 >
                   {nextLesson.title} →
                 </Link>
               ) : (
                 <Link
                   href={`/education/${course.slug}`}
-                  className="text-sm text-gray-500 hover:text-[#8f1a1c]"
+                  className="text-sm text-gray-500 hover:text-red-800"
                 >
                   Вернуться к курсу →
                 </Link>

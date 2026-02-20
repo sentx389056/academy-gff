@@ -33,9 +33,9 @@ function ModuleBlock({ module }: { module: Module }) {
   if (type === "heading") {
     const level = Number(content.level) || 2;
     const text = str(content.text);
-    if (level === 1) return <h1 className="text-3xl font-bold text-[#1d1d1d]">{text}</h1>;
-    if (level === 3) return <h3 className="text-xl font-semibold text-[#1d1d1d]">{text}</h3>;
-    return <h2 className="text-2xl font-bold text-[#1d1d1d]">{text}</h2>;
+    if (level === 1) return <h1 className="text-3xl font-bold text-slate-900">{text}</h1>;
+    if (level === 3) return <h3 className="text-xl font-semibold text-slate-900">{text}</h3>;
+    return <h2 className="text-2xl font-bold text-slate-900">{text}</h2>;
   }
 
   if (type === "text") {
@@ -101,7 +101,7 @@ function ModuleBlock({ module }: { module: Module }) {
     const text = str(content.text);
     const author = str(content.author);
     return (
-      <blockquote className="border-l-4 border-[#8f1a1c] pl-4 py-1 italic text-gray-600">
+      <blockquote className="border-l-4 border-red-800 pl-4 py-1 italic text-gray-600">
         <p>{text}</p>
         {author && (
           <cite className="text-sm text-gray-400 not-italic mt-1 block">
@@ -141,13 +141,13 @@ function ModuleBlock({ module }: { module: Module }) {
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group"
       >
-        <div className="w-10 h-10 bg-[#8f1a1c]/10 rounded-lg flex items-center justify-center">
-          <svg className="w-5 h-5 text-[#8f1a1c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 bg-red-800/10 rounded-lg flex items-center justify-center">
+          <svg className="w-5 h-5 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
         <div>
-          <div className="text-sm font-medium text-gray-800 group-hover:text-[#8f1a1c]">{name}</div>
+          <div className="text-sm font-medium text-gray-800 group-hover:text-red-800">{name}</div>
           {size && <div className="text-xs text-gray-400">{size}</div>}
         </div>
         <svg className="w-4 h-4 text-gray-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
