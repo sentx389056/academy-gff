@@ -96,8 +96,9 @@ export default function ContactForm() {
             onCheckedChange={(v) => setAgreed(!!v)}
             className="mt-0.5 data-[state=checked]:bg-red-800 data-[state=checked]:border-red-800"
           />
-          <Label htmlFor="contact-consent" className="text-xs text-slate-500 leading-relaxed cursor-pointer">
-            Даю согласие <strong className="text-slate-700">Академии Госфильмофонда России</strong> на обработку своих персональных данных
+          <Label htmlFor="contact-consent" className="flex flex-wrap text-xs text-slate-500 leading-relaxed cursor-pointer">
+            Даю согласие <strong className="text-slate-700">Академии Госфильмофонда России</strong>
+            <br/> на обработку своих персональных данных
           </Label>
         </div>
         {status === "error" && (

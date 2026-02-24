@@ -73,11 +73,11 @@ export default async function CoursePage({ params }: Props) {
               <p className="text-xs text-slate-400 uppercase tracking-widest mb-2 font-semibold">
                 Программа повышения квалификации
               </p>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-4 break-words">
                 {course.title}
               </h1>
               {course.description && (
-                <p className="text-slate-500 text-sm leading-relaxed mb-5">
+                <p className="text-slate-500 text-sm leading-relaxed mb-5 break-words">
                   {course.description}
                 </p>
               )}

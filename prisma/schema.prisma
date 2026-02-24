@@ -119,6 +119,49 @@ model Application {
   updatedAt DateTime         @updatedAt
 }
 
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  summary   String?
+  image     String?
+  published Boolean  @default(false)
+  modules   Json     @default("[]")
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Practice {
+  id        Int       @id @default(autoincrement())
+  title     String
+  slug      String    @unique
+  summary   String?
+  image     String?
+  published Boolean   @default(false)
+  modules   Json      @default("[]")
+  category  String?   // Практика / Стажировка
+  company   String?   // Организация-партнёр
+  format    String?   // Очно / Онлайн / Смешанный
+  deadline  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  summary   String?
+  image     String?
+  published Boolean  @default(false)
+  modules   Json     @default("[]")
+  category  String?  // Исследовательский / Прикладной / Студенческий
+  year      Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model NewsletterSubscriber {
   id        Int      @id @default(autoincrement())
   email     String   @unique

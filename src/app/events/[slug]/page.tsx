@@ -67,7 +67,7 @@ export default async function EventPage({ params }: Props) {
 
             {/* Info */}
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-4 break-words">
                 {event.title}
               </h1>
               <div className="flex flex-wrap gap-3 mb-4">
@@ -82,16 +82,16 @@ export default async function EventPage({ params }: Props) {
                   })}
                 </span>
                 {event.location && (
-                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full max-w-full break-words">
+                    <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     </svg>
-                    {event.location}
+                    <span className="break-words">{event.location}</span>
                   </span>
                 )}
               </div>
               {event.description && (
-                <p className="text-slate-500 text-sm leading-relaxed">{event.description}</p>
+                <p className="text-slate-500 text-sm leading-relaxed break-words">{event.description}</p>
               )}
             </div>
           </div>
@@ -134,7 +134,7 @@ export default async function EventPage({ params }: Props) {
                   <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  <a href="mailto:events@gosfilmofond-academy.ru" className="text-red-800 hover:underline">
+                  <a href="mailto:events@gosfilmofond-academy.ru" className="text-red-800 hover:underline break-all">
                     events@gosfilmofond-academy.ru
                   </a>
                 </div>
@@ -145,11 +145,11 @@ export default async function EventPage({ params }: Props) {
                   +7 (495) 123-45-69
                 </div>
                 {event.location && (
-                  <div className="flex items-center gap-2 text-sm text-slate-600">
-                    <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-start gap-2 text-sm text-slate-600">
+                    <svg className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     </svg>
-                    {event.location}
+                    <span className="break-words">{event.location}</span>
                   </div>
                 )}
               </div>

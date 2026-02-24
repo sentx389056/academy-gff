@@ -131,3 +131,33 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Accessibility mode ── */
+html.a11y-font-large  { font-size: 18px; }
+html.a11y-font-xlarge { font-size: 22px; }
+
+/* Black on white */
+html[data-a11y="bw"] body {
+  background: #ffffff !important;
+  color: #000000 !important;
+  filter: grayscale(100%) contrast(1.6);
+}
+html[data-a11y="bw"] * {
+  border-color: #000000 !important;
+}
+
+/* White on black */
+html[data-a11y="wb"] body {
+  background: #000000 !important;
+  color: #ffffff !important;
+  filter: invert(1) grayscale(100%);
+}
+
+/* Yellow on black */
+html[data-a11y="yb"] body {
+  background: #000000 !important;
+  color: #ffff00 !important;
+  filter: contrast(1.3);
+}
+html[data-a11y="yb"] a { color: #ffff00 !important; }
+html[data-a11y="yb"] button { border-color: #ffff00 !important; }

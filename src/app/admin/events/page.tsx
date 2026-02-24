@@ -39,14 +39,14 @@ export default async function AdminEventsPage() {
             <tbody>
               {events.map((event) => (
                 <tr key={event.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="font-medium text-gray-900">{event.title}</div>
-                    <div className="text-xs text-gray-400">/events/{event.slug}</div>
+                  <td className="px-4 py-3 max-w-xs">
+                    <div className="font-medium text-gray-900 truncate" title={event.title}>{event.title}</div>
+                    <div className="text-xs text-gray-400 truncate">/events/{event.slug}</div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">
                     {new Date(event.date).toLocaleDateString("ru-RU")}
                   </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">{event.location || "—"}</td>
+                  <td className="px-4 py-3 text-gray-500 text-xs max-w-[140px] truncate" title={event.location || ""}>{event.location || "—"}</td>
                   <td className="px-4 py-3">
                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${event.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
                       {event.published ? "Опубликовано" : "Черновик"}

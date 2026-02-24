@@ -61,7 +61,7 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
       </div>
       <div className="flex flex-col sm:flex-row sm:gap-4 flex-1 min-w-0">
         <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">{label}</span>
-        <span className="text-sm text-slate-700 font-medium">{value}</span>
+        <span className="text-sm text-slate-700 font-medium break-words">{value}</span>
       </div>
     </div>
   );
@@ -77,7 +77,7 @@ function StaffRow({ person }: { person: StaffMember }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
         </div>
-        <h3 className="font-bold text-slate-900">{person.name}</h3>
+        <h3 className="font-bold text-slate-900 break-words min-w-0">{person.name}</h3>
       </div>
 
       <div className="px-5 py-3">

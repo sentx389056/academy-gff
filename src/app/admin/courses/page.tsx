@@ -40,9 +40,9 @@ export default async function AdminCoursesPage() {
             <tbody>
               {courses.map((course) => (
                 <tr key={course.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="font-medium text-gray-900">{course.title}</div>
-                    <div className="text-xs text-gray-400">/education/{course.slug}</div>
+                  <td className="px-4 py-3 max-w-xs">
+                    <div className="font-medium text-gray-900 truncate" title={course.title}>{course.title}</div>
+                    <div className="text-xs text-gray-400 truncate">/education/{course.slug}</div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{course.lessons.length}</td>
                   <td className="px-4 py-3">
