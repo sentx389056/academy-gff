@@ -432,7 +432,7 @@ export default async function HomePage() {
               <div className="flex-1 min-h-65">
                 <iframe
                   title="Карта проезда"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=37.57%2C55.38%2C37.67%2C55.44&layer=mapnik&marker=55.408%2C37.617"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=37.83558905124664%2C55.324707119708854%2C37.83872991800309%2C55.32590346653728&amp;layer=mapnik&amp;marker=55.32530529763677%2C37.83715948462486"
                   width="100%"
                   height="100%"
                   style={{ minHeight: 260, border: 0, display: "block" }}
