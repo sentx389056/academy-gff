@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 
 export default async function AdminLayout({
   children,
@@ -117,6 +118,19 @@ export default async function AdminLayout({
           ))}
 
           <p className="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">
+            Настройки
+          </p>
+          <Link
+            href="/admin/references"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            Справочники
+          </Link>
+
+          <p className="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">
             Сайт
           </p>
           <Link
@@ -134,15 +148,16 @@ export default async function AdminLayout({
         {/* Logout */}
         <div className="p-3 border-t border-white/10">
           <form action="/api/auth/logout" method="POST">
-            <button
+            <Button
               type="submit"
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+              variant="ghost"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors justify-start"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
               Выйти
-            </button>
+            </Button>
           </form>
         </div>
       </aside>

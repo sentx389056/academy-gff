@@ -1,19 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 
 export default function ContactForm() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const form = useForm();
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    setFormData((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,11 +27,11 @@ export default function ContactForm() {
       const res = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "contact" }),
+        body: JSON.stringify({ ...formData, type: "contact" }),
       });
       if (res.ok) {
         setStatus("success");
-        setForm({ name: "", email: "", phone: "", message: "" });
+        setFormData({ name: "", email: "", phone: "", message: "" });
         setAgreed(false);
       } else {
         setStatus("error");
@@ -53,65 +56,67 @@ export default function ContactForm() {
   return (
     <div className="bg-white rounded-xl p-6">
       <h3 className="font-semibold text-slate-900 mb-5">Отправить сообщение</h3>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            name="name"
-            required
-            placeholder="Ваше имя"
-            value={form.name}
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              name="name"
+              required
+              placeholder="Ваше имя"
+              value={formData.name}
+              onChange={handleChange}
+              className="col-span-2 focus-visible:ring-red-800 focus-visible:border-red-800"
+            />
+            <Input
+              name="email"
+              type="email"
+              required
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="focus-visible:ring-red-800 focus-visible:border-red-800"
+            />
+            <Input
+              name="phone"
+              type="tel"
+              placeholder="Телефон"
+              value={formData.phone}
+              onChange={handleChange}
+              className="focus-visible:ring-red-800 focus-visible:border-red-800"
+            />
+          </div>
+          <Textarea
+            name="message"
+            rows={3}
+            placeholder="Ваше сообщение"
+            value={formData.message}
             onChange={handleChange}
-            className="col-span-2 focus-visible:ring-red-800 focus-visible:border-red-800"
+            className="resize-none focus-visible:ring-red-800 focus-visible:border-red-800"
           />
-          <Input
-            name="email"
-            type="email"
-            required
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="focus-visible:ring-red-800 focus-visible:border-red-800"
-          />
-          <Input
-            name="phone"
-            type="tel"
-            placeholder="Телефон"
-            value={form.phone}
-            onChange={handleChange}
-            className="focus-visible:ring-red-800 focus-visible:border-red-800"
-          />
-        </div>
-        <Textarea
-          name="message"
-          rows={3}
-          placeholder="Ваше сообщение"
-          value={form.message}
-          onChange={handleChange}
-          className="resize-none focus-visible:ring-red-800 focus-visible:border-red-800"
-        />
-        <div className="flex items-start gap-2">
-          <Checkbox
-            id="contact-consent"
-            checked={agreed}
-            onCheckedChange={(v) => setAgreed(!!v)}
-            className="mt-0.5 data-[state=checked]:bg-red-800 data-[state=checked]:border-red-800"
-          />
-          <Label htmlFor="contact-consent" className="flex flex-wrap text-xs text-slate-500 leading-relaxed cursor-pointer">
-            Даю согласие <strong className="text-slate-700">Академии Госфильмофонда России</strong>
-            <br/> на обработку своих персональных данных
-          </Label>
-        </div>
-        {status === "error" && (
-          <p className="text-xs text-red-600">Ошибка при отправке. Попробуйте ещё раз.</p>
-        )}
-        <Button
-          type="submit"
-          disabled={!agreed || status === "loading"}
-          className="w-full bg-red-800 hover:bg-red-900 text-white font-semibold py-3"
-        >
-          {status === "loading" ? "Отправка..." : "Отправить"}
-        </Button>
-      </form>
+          <div className="flex items-start gap-2">
+            <Checkbox
+              id="contact-consent"
+              checked={agreed}
+              onCheckedChange={(v) => setAgreed(!!v)}
+              className="mt-0.5 data-[state=checked]:bg-red-800 data-[state=checked]:border-red-800"
+            />
+            <Label htmlFor="contact-consent" className="flex flex-wrap text-xs text-slate-500 leading-relaxed cursor-pointer">
+              Даю согласие <strong className="text-slate-700">Академии Госфильмофонда России</strong>
+              <br/> на обработку своих персональных данных
+            </Label>
+          </div>
+          {status === "error" && (
+            <p className="text-xs text-red-600">Ошибка при отправке. Попробуйте ещё раз.</p>
+          )}
+          <Button
+            type="submit"
+            disabled={!agreed || status === "loading"}
+            className="w-full bg-red-800 hover:bg-red-900 text-white font-semibold py-3"
+          >
+            {status === "loading" ? "Отправка..." : "Отправить"}
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }

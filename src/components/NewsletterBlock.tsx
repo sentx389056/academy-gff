@@ -34,12 +34,12 @@ export default function NewsletterBlock() {
   };
 
   return (
-    <section className="py-14 bg-red-800 text-white">
+    <section className="py-14 bg-slate-800 text-white">
       <div className="mx-auto max-w-[1170px] px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="max-w-md">
             <h2 className="text-2xl font-bold mb-2">Подпишитесь на рассылку</h2>
-            <p className="text-red-200 text-sm leading-relaxed">
+            <p className="text-slate-400 text-sm leading-relaxed">
               Получайте актуальные новости, анонсы событий и новых программ обучения прямо на почту.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function NewsletterBlock() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <p className="font-semibold text-lg">Вы подписаны!</p>
-                <p className="text-red-200 text-sm mt-1">Спасибо, мы будем вас информировать.</p>
+                <p className="text-slate-400 text-sm mt-1">Спасибо, мы будем вас информировать.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -66,7 +66,7 @@ export default function NewsletterBlock() {
                   <Button
                     type="submit"
                     disabled={!agreed || !email || status === "loading"}
-                    className="bg-white text-red-800 hover:bg-red-50 font-semibold shrink-0"
+                    className="bg-red-700 hover:bg-red-800 text-white font-semibold shrink-0"
                   >
                     {status === "loading" ? "..." : "Подписаться"}
                   </Button>
@@ -76,14 +76,14 @@ export default function NewsletterBlock() {
                     id="newsletter-consent"
                     checked={agreed}
                     onCheckedChange={(v) => setAgreed(!!v)}
-                    className="mt-0.5 border-white/40 data-[state=checked]:bg-white data-[state=checked]:text-red-800"
+                    className="mt-0.5 border-white/40 data-[state=checked]:bg-white data-[state=checked]:text-slate-900"
                   />
-                  <Label htmlFor="newsletter-consent" className="text-xs text-red-200 leading-relaxed cursor-pointer">
+                  <Label htmlFor="newsletter-consent" className="text-xs text-slate-400 leading-relaxed cursor-pointer">
                     Даю согласие на обработку персональных данных и получение информационных материалов
                   </Label>
                 </div>
                 {status === "error" && (
-                  <p className="text-xs text-red-200">Ошибка. Попробуйте ещё раз.</p>
+                  <p className="text-xs text-slate-400">Ошибка. Попробуйте ещё раз.</p>
                 )}
               </form>
             )}

@@ -6,7 +6,10 @@ import ModuleRenderer from "@/components/ModuleRenderer";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = await prisma.project.findUnique({ where: { slug, published: true } });
+  const item = await prisma.project.findUnique({
+    where: { slug, published: true },
+    include: { category: true },
+  });
   if (!item) notFound();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +28,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
           <div className="flex flex-wrap gap-2 mb-3">
             {item.category && (
-              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.category}</span>
+              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.category.name}</span>
             )}
             {item.year && (
               <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.year}</span>
@@ -53,7 +56,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             {item.category && (
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Категория</h3>
-                <p className="text-sm font-medium text-slate-900">{item.category}</p>
+                <p className="text-sm font-medium text-slate-900">{item.category.name}</p>
               </div>
             )}
             {item.year && (

@@ -1,9 +1,26 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Form } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type LookupItem = { id: number; name: string };
 
 type ProjectData = {
   id: number;
@@ -11,7 +28,7 @@ type ProjectData = {
   slug: string;
   summary: string | null;
   image: string | null;
-  category: string | null;
+  categoryId: number | null;
   year: number | null;
   published: boolean;
   modules: Module[];
@@ -21,19 +38,30 @@ export default function EditProjectPage() {
   const params = useParams();
   const router = useRouter();
   const itemId = params.id as string;
+  const form = useForm();
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [summary, setSummary] = useState("");
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState<string>("");
   const [year, setYear] = useState("");
   const [published, setPublished] = useState(false);
   const [modules, setModules] = useState<Module[]>([]);
+  const [projectCategories, setProjectCategories] = useState<LookupItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const lookupLoaded = useRef(false);
+
+  useEffect(() => {
+    if (lookupLoaded.current) return;
+    lookupLoaded.current = true;
+    fetch("/api/lookup")
+      .then((r) => r.json())
+      .then((d) => setProjectCategories(d.projectCategories ?? []));
+  }, []);
 
   const loadItem = useCallback(async () => {
     try {
@@ -44,7 +72,7 @@ export default function EditProjectPage() {
       setSlug(data.slug);
       setSummary(data.summary || "");
       setImage(data.image || "");
-      setCategory(data.category || "");
+      setCategoryId(data.categoryId ? String(data.categoryId) : "");
       setYear(data.year ? String(data.year) : "");
       setPublished(data.published);
       setModules(Array.isArray(data.modules) ? data.modules : []);
@@ -67,7 +95,8 @@ export default function EditProjectPage() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title, slug, summary, image, category,
+          title, slug, summary, image,
+          categoryId: categoryId ? parseInt(categoryId) : null,
           year: year ? parseInt(year) : null,
           published, modules,
         }),
@@ -97,73 +126,92 @@ export default function EditProjectPage() {
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать проект</h1>
         </div>
         <div className="flex gap-2">
-          <Link href={`/projects/${slug}`} target="_blank" className="text-sm border border-gray-200 text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-50">Просмотр →</Link>
-          <button onClick={handleDelete} className="text-sm text-red-500 border border-red-200 px-3 py-2 rounded-lg hover:bg-red-50">Удалить</button>
+          <Button asChild variant="outline" size="sm">
+            <Link href={`/projects/${slug}`} target="_blank">Просмотр →</Link>
+          </Button>
+          <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
+            Удалить
+          </Button>
         </div>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-6">
-        {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>}
-        {success && <div className="bg-green-50 text-green-700 border border-green-200 rounded-lg px-4 py-3 text-sm">{success}</div>}
+      <Form {...form}>
+        <form onSubmit={handleSave} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          {success && (
+            <Alert className="border-green-200 bg-green-50 text-green-700">
+              <AlertDescription>{success}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Название</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-            <div className="flex gap-2 items-center">
-              <span className="text-sm text-gray-400">/projects/</span>
-              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label>Название</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Категория</label>
-              <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800">
-                <option value="">— выберите —</option>
-                <option value="Исследовательский">Исследовательский</option>
-                <option value="Прикладной">Прикладной</option>
-                <option value="Студенческий">Студенческий</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Год</label>
-              <input type="number" value={year} onChange={(e) => setYear(e.target.value)} min="2000" max="2100" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Краткое описание</label>
-            <textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={3} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
-          </div>
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="sr-only" />
-              <div className={`w-11 h-6 rounded-full transition-colors ${published ? "bg-green-500" : "bg-gray-300"}`}>
-                <div className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform m-0.5 ${published ? "translate-x-5" : "translate-x-0"}`} />
+            <div className="space-y-1.5">
+              <Label>Slug</Label>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-400">/projects/</span>
+                <Input value={slug} onChange={(e) => setSlug(e.target.value)} required />
               </div>
-            </label>
-            <span className="text-sm text-gray-700">{published ? "Опубликовано" : "Черновик"}</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label>Категория</Label>
+                <Select value={categoryId} onValueChange={setCategoryId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="— выберите —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projectCategories.map((t) => (
+                      <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Год</Label>
+                <Input type="number" value={year} onChange={(e) => setYear(e.target.value)} min="2000" max="2100" />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Краткое описание</Label>
+              <Textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={3} className="resize-none" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>URL изображения</Label>
+              <Input type="url" value={image} onChange={(e) => setImage(e.target.value)} />
+            </div>
+            <div className="flex items-center gap-3">
+              <Switch
+                id="published"
+                checked={published}
+                onCheckedChange={setPublished}
+              />
+              <Label htmlFor="published" className="cursor-pointer font-normal">
+                {published ? "Опубликовано" : "Черновик"}
+              </Label>
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-800 mb-1">Описание проекта</h2>
-          <p className="text-xs text-gray-500 mb-4">Цели, результаты, участники</p>
-          <ModuleBuilder value={modules} onChange={setModules} />
-        </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-gray-800 mb-1">Описание проекта</h2>
+            <p className="text-xs text-gray-500 mb-4">Цели, результаты, участники</p>
+            <ModuleBuilder value={modules} onChange={setModules} />
+          </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
-            {saving ? "Сохранение..." : "Сохранить"}
-          </button>
-        </div>
-      </form>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+              {saving ? "Сохранение..." : "Сохранить"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

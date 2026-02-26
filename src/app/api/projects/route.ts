@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     orderBy: { createdAt: "desc" },
     take,
     skip,
+    include: { category: true },
   });
 
   return NextResponse.json(items);
@@ -23,7 +24,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const data = await req.json();
-  const item = await prisma.project.create({ data });
+  const body = await req.json();
+  const { title, slug, summary, image, categoryId, year, published, modules } = body;
+
+  const item = await prisma.project.create({
+    data: {
+      title, slug, summary, image,
+      categoryId: categoryId || null,
+      year: year || null,
+      published: published ?? false,
+      modules: modules ?? [],
+    },
+    include: { category: true },
+  });
   return NextResponse.json(item, { status: 201 });
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface NewsItem {
   id: number;
@@ -90,15 +91,16 @@ export default function NewsGrid({ news, pageSize = 3 }: Props) {
 
       {hasMore && (
         <div className="text-center mt-8">
-          <button
+          <Button
             onClick={() => setVisible((v) => v + pageSize)}
-            className="inline-flex items-center gap-2 border border-slate-300 hover:border-red-800 text-slate-700 hover:text-red-800 font-semibold px-8 py-2.5 rounded transition-colors text-sm"
+            variant="outline"
+            className="border-slate-300 hover:border-red-800 text-slate-700 hover:text-red-800 font-semibold px-8 py-2.5 rounded transition-colors text-sm"
           >
             Показать ещё
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </Button>
         </div>
       )}
     </div>

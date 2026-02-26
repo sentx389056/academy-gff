@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { format as fmtDate } from "date-fns";
+import { ru } from "date-fns/locale";
 import { prisma } from "@/lib/prisma";
 import ModuleRenderer from "@/components/ModuleRenderer";
 import CourseDetailTabs from "./CourseDetailTabs";
@@ -23,7 +25,7 @@ export default async function CoursePage({ params }: Props) {
   const { slug } = await params;
   const course = await prisma.course.findUnique({
     where: { slug, published: true },
-    include: { lessons: { orderBy: { order: "asc" } } },
+    include: { lessons: { orderBy: { order: "asc" } }, programType: true, level: true },
   });
 
   if (!course) notFound();
@@ -69,31 +71,37 @@ export default async function CoursePage({ params }: Props) {
             </div>
 
             {/* Info */}
-            <div className="flex-1">
-              <p className="text-xs text-slate-400 uppercase tracking-widest mb-2 font-semibold">
-                Программа повышения квалификации
-              </p>
+            <div className="flex flex-col">
+              {course.programType && (
+                <p className="text-xs text-slate-400 uppercase tracking-widest mb-2 font-semibold">
+                  {course.programType.name}
+                </p>
+              )}
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-4 break-words">
                 {course.title}
               </h1>
               {course.description && (
-                <p className="text-slate-500 text-sm leading-relaxed mb-5 break-words">
+                <p className="text-slate-500 text-sm leading-relaxed mb-5 text-wrap break-words">
                   {course.description}
                 </p>
               )}
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-full">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  Уровень обучения: Средний
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-red-800/10 text-red-800 border border-red-800/20 px-3 py-1 rounded-full">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  1 июня, 2026 — 24 июля, 2026
-                </span>
+                {course.level && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-full">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Уровень обучения: {course.level.name}
+                  </span>
+                )}
+                {course.startDate && course.endDate && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-red-800/10 text-red-800 border border-red-800/20 px-3 py-1 rounded-full">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {fmtDate(course.startDate, "d MMMM yyyy", { locale: ru })} — {fmtDate(course.endDate, "d MMMM yyyy", { locale: ru })}
+                  </span>
+                )}
               </div>
             </div>
           </div>

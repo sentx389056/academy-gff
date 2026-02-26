@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Панель управления — Академия ГФФ",
@@ -59,24 +61,15 @@ export default async function AdminDashboard() {
       <div className="mb-8">
         <h2 className="text-base font-semibold text-slate-900 mb-4">Быстрые действия</h2>
         <div className="flex flex-wrap gap-3">
-          <Link
-            href="/admin/courses/new"
-            className="flex items-center gap-2 bg-red-800 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-red-900 transition-colors"
-          >
-            + Новый курс
-          </Link>
-          <Link
-            href="/admin/events/new"
-            className="flex items-center gap-2 bg-green-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-green-700 transition-colors"
-          >
-            + Новое событие
-          </Link>
-          <Link
-            href="/admin/staff/new"
-            className="flex items-center gap-2 bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            + Новый сотрудник
-          </Link>
+          <Button asChild className="bg-red-800 hover:bg-red-900">
+            <Link href="/admin/courses/new">+ Новый курс</Link>
+          </Button>
+          <Button asChild className="bg-green-600 hover:bg-green-700">
+            <Link href="/admin/events/new">+ Новое событие</Link>
+          </Button>
+          <Button asChild className="bg-blue-600 hover:bg-blue-700">
+            <Link href="/admin/staff/new">+ Новый сотрудник</Link>
+          </Button>
         </div>
       </div>
 
@@ -99,15 +92,9 @@ export default async function AdminDashboard() {
                   >
                     {course.title}
                   </Link>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      course.published
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-500"
-                    }`}
-                  >
+                  <Badge className={course.published ? "bg-green-100 text-green-700 border-0 hover:bg-green-100" : "bg-gray-100 text-gray-500 border-0 hover:bg-gray-100"}>
                     {course.published ? "Опубликован" : "Черновик"}
-                  </span>
+                  </Badge>
                 </li>
               ))}
             </ul>
@@ -138,15 +125,9 @@ export default async function AdminDashboard() {
                     <span className="text-xs text-gray-400">
                       {new Date(event.date).toLocaleDateString("ru-RU")}
                     </span>
-                    <span
-                      className={`text-xs px-2 py-0.5 rounded-full ${
-                        event.published
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-500"
-                      }`}
-                    >
+                    <Badge className={event.published ? "bg-green-100 text-green-700 border-0 hover:bg-green-100" : "bg-gray-100 text-gray-500 border-0 hover:bg-gray-100"}>
                       {event.published ? "Опубликовано" : "Черновик"}
-                    </span>
+                    </Badge>
                   </div>
                 </li>
               ))}

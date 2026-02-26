@@ -3,7 +3,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { format as fmtDate } from "date-fns";
+import { ru } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Form } from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type EventData = {
   id: number;
@@ -21,10 +34,12 @@ export default function EditEventPage() {
   const params = useParams();
   const router = useRouter();
   const eventId = params.id as string;
+  const form = useForm();
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [time, setTime] = useState("12:00");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -42,7 +57,9 @@ export default function EditEventPage() {
       const data: EventData = await res.json();
       setTitle(data.title);
       setSlug(data.slug);
-      setDate(new Date(data.date).toISOString().slice(0, 16));
+      const d = new Date(data.date);
+      setDate(d);
+      setTime(`${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`);
       setLocation(data.location || "");
       setDescription(data.description || "");
       setImage(data.image || "");
@@ -64,10 +81,14 @@ export default function EditEventPage() {
     setSuccess("");
 
     try {
+      const dateStr = date
+        ? `${fmtDate(date, "yyyy-MM-dd")}T${time}:00`
+        : "";
+
       const res = await fetch(`/api/events/${eventId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, slug, date, location, description, image, published, modules }),
+        body: JSON.stringify({ title, slug, date: dateStr, location, description, image, published, modules }),
       });
       if (!res.ok) throw new Error("Ошибка сохранения");
       setSuccess("Событие сохранено!");
@@ -94,68 +115,99 @@ export default function EditEventPage() {
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать событие</h1>
         </div>
         <div className="flex gap-2">
-          <Link href={`/events/${slug}`} target="_blank" className="text-sm border border-gray-200 text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-50">Просмотр →</Link>
-          <button onClick={handleDelete} className="text-sm text-red-500 border border-red-200 px-3 py-2 rounded-lg hover:bg-red-50">Удалить</button>
+          <Button asChild variant="outline" size="sm">
+            <Link href={`/events/${slug}`} target="_blank">Просмотр →</Link>
+          </Button>
+          <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
+            Удалить
+          </Button>
         </div>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-6">
-        {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>}
-        {success && <div className="bg-green-50 text-green-700 border border-green-200 rounded-lg px-4 py-3 text-sm">{success}</div>}
+      <Form {...form}>
+        <form onSubmit={handleSave} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          {success && (
+            <Alert className="border-green-200 bg-green-50 text-green-700">
+              <AlertDescription>{success}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Название</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-            <div className="flex gap-2 items-center">
-              <span className="text-sm text-gray-400">/events/</span>
-              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label>Название</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Дата</label>
-              <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" required />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Место</label>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Описание</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" />
-          </div>
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="sr-only" />
-              <div className={`w-11 h-6 rounded-full transition-colors ${published ? "bg-green-500" : "bg-gray-300"}`}>
-                <div className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform m-0.5 ${published ? "translate-x-5" : "translate-x-0"}`} />
+            <div className="space-y-1.5">
+              <Label>Slug</Label>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-400">/events/</span>
+                <Input value={slug} onChange={(e) => setSlug(e.target.value)} required />
               </div>
-            </label>
-            <span className="text-sm text-gray-700">{published ? "Опубликовано" : "Черновик"}</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label>Дата</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-normal">
+                      <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                      {date
+                        ? fmtDate(date, "d MMMM yyyy", { locale: ru })
+                        : <span className="text-muted-foreground">Выберите дату</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Время</Label>
+                <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Место</Label>
+              <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Описание</Label>
+              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className="resize-none" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>URL изображения</Label>
+              <Input type="url" value={image} onChange={(e) => setImage(e.target.value)} />
+            </div>
+            <div className="flex items-center gap-3">
+              <Switch
+                id="published"
+                checked={published}
+                onCheckedChange={setPublished}
+              />
+              <Label htmlFor="published" className="cursor-pointer font-normal">
+                {published ? "Опубликовано" : "Черновик"}
+              </Label>
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-800 mb-1">Содержание события</h2>
-          <p className="text-xs text-gray-500 mb-4">Программа, спикеры, материалы</p>
-          <ModuleBuilder value={modules} onChange={setModules} />
-        </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-gray-800 mb-1">Содержание события</h2>
+            <p className="text-xs text-gray-500 mb-4">Программа, спикеры, материалы</p>
+            <ModuleBuilder value={modules} onChange={setModules} />
+          </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
-            {saving ? "Сохранение..." : "Сохранить"}
-          </button>
-        </div>
-      </form>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+              {saving ? "Сохранение..." : "Сохранить"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

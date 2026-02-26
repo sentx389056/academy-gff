@@ -23,9 +23,10 @@ export async function PUT(
         department: body.department,
         bio: body.bio,
         image: body.image,
-        isManagement: body.isManagement,
+        staffTypeId: body.staffTypeId || null,
         order: body.order ?? 0,
       },
+      include: { staffType: true },
     });
     return NextResponse.json(person);
   } catch (error) {

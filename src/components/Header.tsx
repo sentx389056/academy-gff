@@ -11,6 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
 import SearchDialog from "@/components/SearchDialog";
 
 const aboutItems = [
@@ -92,6 +93,7 @@ export default function Header() {
 
   return (
     <>
+      <header className="sticky top-0 z-50 bg-slate-900 text-white shadow-md">
       {/* ── ACCESSIBILITY BAR ── */}
       {accessBar && (
         <div className="bg-slate-800 text-white text-xs border-b border-white/10">
@@ -102,7 +104,7 @@ export default function Header() {
             <div className="flex items-center gap-1">
               <span className="text-slate-400 mr-1">Шрифт:</span>
               {(["normal", "large", "xlarge"] as FontSize[]).map((fs, i) => (
-                <button
+                <Button
                   key={fs}
                   onClick={() => setFontSize(fs)}
                   className={`w-7 h-7 rounded font-semibold transition-colors ${
@@ -115,14 +117,14 @@ export default function Header() {
                   title={["Обычный", "Большой", "Очень большой"][i]}
                 >
                   A
-                </button>
+                </Button>
               ))}
             </div>
 
             {/* Color scheme */}
             <div className="flex items-center gap-1">
               <span className="text-slate-400 mr-1">Цвета:</span>
-              <button
+              <Button
                 onClick={() => setColorScheme("normal")}
                 className={`px-2.5 py-1 rounded border transition-colors ${
                   colorScheme === "normal"
@@ -132,8 +134,8 @@ export default function Header() {
                 aria-label="Обычная цветовая схема"
               >
                 Ц
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setColorScheme("bw")}
                 className={`px-2.5 py-1 rounded border transition-colors bg-white text-black ${
                   colorScheme === "bw" ? "border-red-800 ring-1 ring-red-800" : "border-slate-300"
@@ -142,8 +144,8 @@ export default function Header() {
                 title="Чёрный на белом"
               >
                 Ч
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setColorScheme("wb")}
                 className={`px-2.5 py-1 rounded border transition-colors bg-black text-white ${
                   colorScheme === "wb" ? "border-red-800 ring-1 ring-red-800" : "border-slate-600"
@@ -152,8 +154,8 @@ export default function Header() {
                 title="Белый на чёрном"
               >
                 Ч
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setColorScheme("yb")}
                 className={`px-2.5 py-1 rounded border transition-colors bg-black text-yellow-300 ${
                   colorScheme === "yb" ? "border-red-800 ring-1 ring-red-800" : "border-slate-600"
@@ -162,23 +164,22 @@ export default function Header() {
                 title="Жёлтый на чёрном"
               >
                 Ч
-              </button>
+              </Button>
             </div>
 
-            <button
+            <Button
               onClick={() => {
                 setFontSize("normal");
                 setColorScheme("normal");
               }}
+              variant="ghost"
               className="ml-auto text-slate-400 hover:text-white transition-colors"
             >
               Сбросить
-            </button>
+            </Button>
           </div>
         </div>
       )}
-
-      <header className="sticky top-0 z-50 bg-slate-900 text-white shadow-md">
         {/* ── TOP ROW ── */}
         <div className="border-b border-white/10">
           <div className="mx-auto max-w-[1170px] px-4">
@@ -215,7 +216,7 @@ export default function Header() {
                 )}
 
                 {/* Accessibility toggle */}
-                <button
+                <Button
                   onClick={toggleAccessBar}
                   className={`hidden sm:inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded transition-colors border ${
                     accessBar
@@ -229,7 +230,7 @@ export default function Header() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                   <span>Версия для слабовидящих</span>
-                </button>
+                </Button>
 
                 {/* Personal account */}
                 {user ? (
@@ -249,19 +250,23 @@ export default function Header() {
                 )}
 
                 {/* Search button */}
-                <button
-                  className="p-2 rounded hover:bg-white/10 transition-colors"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="p-2 rounded hover:bg-white/10 transition-colors text-white"
                   onClick={() => setSearchOpen(true)}
                   aria-label="Поиск"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                </button>
+                </Button>
 
                 {/* Mobile hamburger */}
-                <button
-                  className="lg:hidden p-2 rounded hover:bg-white/10 transition-colors"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden p-2 rounded hover:bg-white/10 transition-colors text-white"
                   onClick={() => setMobileOpen(!mobileOpen)}
                   aria-label="Открыть меню"
                 >
@@ -274,7 +279,7 @@ export default function Header() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -345,8 +350,9 @@ export default function Header() {
           <div className="lg:hidden border-t border-white/10 bg-slate-800">
             <div className="mx-auto max-w-[1170px] px-4 py-4 flex flex-col gap-1">
               {/* Accessibility in mobile */}
-              <button
-                className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white py-2 text-left"
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white py-2 justify-start px-0"
                 onClick={() => { toggleAccessBar(); setMobileOpen(false); }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -354,7 +360,7 @@ export default function Header() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
                 Версия для слабовидящих
-              </button>
+              </Button>
 
               <div className="border-t border-white/10 pt-3 mt-1">
                 <p className="text-[10px] uppercase tracking-wide text-slate-500 mb-2">О нас</p>

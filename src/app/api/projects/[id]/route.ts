@@ -4,7 +4,10 @@ import { getSession } from "@/lib/auth";
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const item = await prisma.project.findUnique({ where: { id: parseInt(id) } });
+  const item = await prisma.project.findUnique({
+    where: { id: parseInt(id) },
+    include: { category: true },
+  });
   if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(item);
 }
@@ -15,8 +18,20 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
-  const data = await req.json();
-  const item = await prisma.project.update({ where: { id: parseInt(id) }, data });
+  const body = await req.json();
+  const { title, slug, summary, image, categoryId, year, published, modules } = body;
+
+  const item = await prisma.project.update({
+    where: { id: parseInt(id) },
+    data: {
+      title, slug, summary, image,
+      categoryId: categoryId || null,
+      year: year || null,
+      published,
+      modules,
+    },
+    include: { category: true },
+  });
   return NextResponse.json(item);
 }
 

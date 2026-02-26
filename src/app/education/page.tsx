@@ -10,7 +10,7 @@ export default async function EducationPage() {
   const courses = await prisma.course.findMany({
     where: { published: true },
     orderBy: { createdAt: "desc" },
-    include: { lessons: { orderBy: { order: "asc" } } },
+    include: { lessons: { orderBy: { order: "asc" } }, programType: true },
   });
 
   return (
@@ -55,9 +55,11 @@ export default async function EducationPage() {
                   {/* Content */}
                   <div className="p-5 flex flex-col justify-between flex-1">
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">
-                        Программа повышения квалификации
-                      </p>
+                      {course.programType && (
+                        <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">
+                          {course.programType.name}
+                        </p>
+                      )}
                       <h2 className="font-bold text-slate-900 mb-2 group-hover:text-red-800 transition-colors text-base">
                         {course.title}
                       </h2>

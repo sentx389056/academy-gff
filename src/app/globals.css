@@ -41,6 +41,12 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar in all browsers */
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {

@@ -1,9 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { format as fmtDate } from "date-fns";
+import { ru } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Form } from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type LookupItem = { id: number; name: string };
 
 function slugify(text: string) {
   return text
@@ -20,19 +42,31 @@ function slugify(text: string) {
 
 export default function NewPracticePage() {
   const router = useRouter();
+  const form = useForm();
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [slugManual, setSlugManual] = useState(false);
   const [summary, setSummary] = useState("");
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState<string>("");
   const [company, setCompany] = useState("");
-  const [format, setFormat] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [formatId, setFormatId] = useState<string>("");
+  const [deadline, setDeadline] = useState<Date | undefined>(undefined);
   const [published, setPublished] = useState(false);
   const [modules, setModules] = useState<Module[]>([]);
+  const [practiceCategories, setPracticeCategories] = useState<LookupItem[]>([]);
+  const [learningFormats, setLearningFormats] = useState<LookupItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/lookup")
+      .then((r) => r.json())
+      .then((d) => {
+        setPracticeCategories(d.practiceCategories ?? []);
+        setLearningFormats(d.learningFormats ?? []);
+      });
+  }, []);
 
   const handleTitleChange = (val: string) => {
     setTitle(val);
@@ -48,8 +82,10 @@ export default function NewPracticePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title, slug, summary, image, category, company, format,
-          deadline: deadline ? new Date(deadline).toISOString() : null,
+          title, slug, summary, image, company,
+          categoryId: categoryId ? parseInt(categoryId) : null,
+          formatId: formatId ? parseInt(formatId) : null,
+          deadline: deadline ? deadline.toISOString() : null,
           published, modules,
         }),
       });
@@ -73,140 +109,144 @@ export default function NewPracticePage() {
         <h1 className="text-xl font-bold text-slate-900 mt-2">Создать запись о практике</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>}
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-          <h2 className="font-semibold text-gray-800">Основные данные</h2>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <h2 className="font-semibold text-gray-800">Основные данные</h2>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Название <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              placeholder="Например: Стажировка в архиве Госфильмофонда"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              URL (slug) <span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2 items-center">
-              <span className="text-sm text-gray-400 flex-shrink-0">/practice/</span>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }}
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
+            <div className="space-y-1.5">
+              <Label>Название <span className="text-red-500">*</span></Label>
+              <Input
+                value={title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Например: Стажировка в архиве Госфильмофонда"
                 required
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Категория</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              >
-                <option value="">— выберите —</option>
-                <option value="Практика">Практика</option>
-                <option value="Стажировка">Стажировка</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Формат</label>
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              >
-                <option value="">— выберите —</option>
-                <option value="Очно">Очно</option>
-                <option value="Онлайн">Онлайн</option>
-                <option value="Смешанный">Смешанный</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Организация-партнёр</label>
-              <input
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-                placeholder="Госфильмофонд России"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Дедлайн подачи заявок</label>
-              <input
-                type="date"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Краткое описание</label>
-            <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              rows={3}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none"
-              placeholder="Краткое описание..."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-            <input
-              type="url"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              placeholder="https://..."
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="sr-only" />
-              <div className={`w-11 h-6 rounded-full transition-colors ${published ? "bg-green-500" : "bg-gray-300"}`}>
-                <div className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform m-0.5 ${published ? "translate-x-5" : "translate-x-0"}`} />
+            <div className="space-y-1.5">
+              <Label>URL (slug) <span className="text-red-500">*</span></Label>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-400 flex-shrink-0">/practice/</span>
+                <Input
+                  value={slug}
+                  onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }}
+                  required
+                />
               </div>
-            </label>
-            <span className="text-sm text-gray-700">{published ? "Опубликовано" : "Черновик"}</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label>Категория</Label>
+                <Select value={categoryId} onValueChange={setCategoryId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="— выберите —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {practiceCategories.map((t) => (
+                      <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Формат</Label>
+                <Select value={formatId} onValueChange={setFormatId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="— выберите —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {learningFormats.map((t) => (
+                      <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label>Организация-партнёр</Label>
+                <Input
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Госфильмофонд России"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Дедлайн подачи заявок</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-normal">
+                      <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                      {deadline
+                        ? fmtDate(deadline, "d MMMM yyyy", { locale: ru })
+                        : <span className="text-muted-foreground">Выберите дату</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar mode="single" selected={deadline} onSelect={setDeadline} initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Краткое описание</Label>
+              <Textarea
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                rows={3}
+                className="resize-none"
+                placeholder="Краткое описание..."
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>URL изображения</Label>
+              <Input
+                type="url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Switch
+                id="published"
+                checked={published}
+                onCheckedChange={setPublished}
+              />
+              <Label htmlFor="published" className="cursor-pointer font-normal">
+                {published ? "Опубликовано" : "Черновик"}
+              </Label>
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-800 mb-1">Подробное описание</h2>
-          <p className="text-xs text-gray-500 mb-4">Требования, условия, как подать заявку</p>
-          <ModuleBuilder value={modules} onChange={setModules} />
-        </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-gray-800 mb-1">Подробное описание</h2>
+            <p className="text-xs text-gray-500 mb-4">Требования, условия, как подать заявку</p>
+            <ModuleBuilder value={modules} onChange={setModules} />
+          </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
-            {loading ? "Сохранение..." : "Создать запись"}
-          </button>
-          <Link href="/admin/practice" className="border border-gray-200 text-gray-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 text-sm">
-            Отмена
-          </Link>
-        </div>
-      </form>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+              {loading ? "Сохранение..." : "Создать запись"}
+            </Button>
+            <Button asChild variant="outline" className="text-gray-600">
+              <Link href="/admin/practice">Отмена</Link>
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

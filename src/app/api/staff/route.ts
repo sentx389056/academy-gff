@@ -3,7 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
-  const staff = await prisma.staff.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }] });
+  const staff = await prisma.staff.findMany({
+    orderBy: [{ order: "asc" }, { name: "asc" }],
+    include: { staffType: true },
+  });
   return NextResponse.json(staff);
 }
 
@@ -14,14 +17,19 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, position, department, bio, image, isManagement, order } = body;
+  const { name, position, department, bio, image, staffTypeId, order } = body;
 
   if (!name || !position) {
     return NextResponse.json({ error: "Имя и должность обязательны" }, { status: 400 });
   }
 
   const person = await prisma.staff.create({
-    data: { name, position, department, bio, image, isManagement: isManagement ?? false, order: order ?? 0 },
+    data: {
+      name, position, department, bio, image,
+      staffTypeId: staffTypeId || null,
+      order: order ?? 0,
+    },
+    include: { staffType: true },
   });
 
   return NextResponse.json(person, { status: 201 });

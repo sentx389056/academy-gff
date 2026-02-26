@@ -6,7 +6,10 @@ import ModuleRenderer from "@/components/ModuleRenderer";
 
 export default async function PracticeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = await prisma.practice.findUnique({ where: { slug, published: true } });
+  const item = await prisma.practice.findUnique({
+    where: { slug, published: true },
+    include: { category: true, format: true },
+  });
   if (!item) notFound();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,10 +28,10 @@ export default async function PracticeDetailPage({ params }: { params: Promise<{
           </div>
           <div className="flex flex-wrap gap-2 mb-3">
             {item.category && (
-              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.category}</span>
+              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.category.name}</span>
             )}
             {item.format && (
-              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.format}</span>
+              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">{item.format.name}</span>
             )}
           </div>
           <h1 className="text-2xl md:text-3xl font-bold max-w-3xl leading-tight break-words">{item.title}</h1>
@@ -59,7 +62,7 @@ export default async function PracticeDetailPage({ params }: { params: Promise<{
             {item.format && (
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Формат</h3>
-                <p className="text-sm font-medium text-slate-900">{item.format}</p>
+                <p className="text-sm font-medium text-slate-900">{item.format.name}</p>
               </div>
             )}
             {item.deadline && (

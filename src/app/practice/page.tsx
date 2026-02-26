@@ -13,6 +13,7 @@ export default async function PracticePage() {
   const items = await prisma.practice.findMany({
     where: { published: true },
     orderBy: { createdAt: "desc" },
+    include: { category: true, format: true },
   });
 
   return (
@@ -55,12 +56,12 @@ export default async function PracticePage() {
                   <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center gap-2 mb-3 flex-wrap">
                       {item.category && (
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColors[item.category] || "bg-slate-100 text-slate-600"}`}>
-                          {item.category}
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${categoryColors[item.category.name] || "bg-slate-100 text-slate-600"}`}>
+                          {item.category.name}
                         </span>
                       )}
                       {item.format && (
-                        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">{item.format}</span>
+                        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">{item.format.name}</span>
                       )}
                     </div>
 

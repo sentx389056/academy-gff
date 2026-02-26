@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface Event {
   id: number;
@@ -117,35 +118,40 @@ export default function EventsSlider({ events }: Props) {
             </h3>
 
             <div className="flex items-center gap-3">
-              <Link
-                href={`/events/${ev.slug}`}
-                className="inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-slate-100 font-semibold text-sm px-5 py-2.5 rounded transition-colors"
+              <Button
+                asChild
+                className="bg-white text-slate-900 hover:bg-slate-100 font-semibold text-sm px-5 py-2.5 rounded transition-colors"
               >
-                Подробнее
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+                <Link href={`/events/${ev.slug}`}>
+                  Подробнее
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </Button>
 
               {/* Prev / Next */}
-              <button
+              <Button
                 onClick={prev}
-                className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                variant="outline"
+                size="icon"
+                className="w-10 h-10 rounded-full border-white/30 text-white bg-transparent hover:bg-white/10 transition-colors"
                 aria-label="Предыдущее событие"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={next}
-                className="w-10 h-10 rounded-full bg-red-800 hover:bg-red-900 flex items-center justify-center text-white transition-colors"
+                size="icon"
+                className="w-10 h-10 rounded-full bg-red-800 hover:bg-red-900 text-white transition-colors"
                 aria-label="Следующее событие"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -160,10 +166,11 @@ export default function EventsSlider({ events }: Props) {
 
           <div className="flex-1 divide-y divide-white/5">
             {events.map((event, i) => (
-              <button
+              <Button
                 key={event.id}
                 onClick={() => setCurrent(i)}
-                className={`w-full text-left px-5 py-4 transition-colors group flex items-start gap-3 ${
+                variant="ghost"
+                className={`w-full text-left px-5 py-4 transition-colors group flex items-start gap-3 h-auto rounded-none justify-start ${
                   i === current ? "bg-white/10" : "hover:bg-white/5"
                 }`}
               >
@@ -193,7 +200,7 @@ export default function EventsSlider({ events }: Props) {
                     {event.title}
                   </p>
                 </div>
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -214,10 +221,10 @@ export default function EventsSlider({ events }: Props) {
       {/* ── Progress dots ── */}
       <div className="flex justify-center gap-2">
         {events.map((_, i) => (
-          <button
+          <Button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 p-0 min-w-0 ${
               i === current ? "w-8 h-1.5 bg-red-800" : "w-1.5 h-1.5 bg-slate-300 hover:bg-slate-400"
             }`}
             aria-label={`Событие ${i + 1}`}

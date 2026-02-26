@@ -1,20 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Form } from "@/components/ui/form";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+
+type LookupItem = { id: number; name: string };
 
 export default function NewStaffPage() {
   const router = useRouter();
+  const form = useForm();
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [department, setDepartment] = useState("");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState("");
-  const [isManagement, setIsManagement] = useState(false);
+  const [staffTypeId, setStaffTypeId] = useState<string>("");
   const [order, setOrder] = useState(0);
+  const [staffTypes, setStaffTypes] = useState<LookupItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/lookup")
+      .then((r) => r.json())
+      .then((d) => setStaffTypes(d.staffTypes ?? []));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +45,11 @@ export default function NewStaffPage() {
       const res = await fetch("/api/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, position, department, bio, image, isManagement, order }),
+        body: JSON.stringify({
+          name, position, department, bio, image,
+          staffTypeId: staffTypeId ? parseInt(staffTypeId) : null,
+          order,
+        }),
       });
 
       if (!res.ok) {
@@ -47,56 +71,64 @@ export default function NewStaffPage() {
         <h1 className="text-xl font-bold text-slate-900 mt-2">Добавить сотрудника</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>}
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ФИО <span className="text-red-500">*</span></label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" placeholder="Иванов Иван Иванович" required />
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label>ФИО <span className="text-red-500">*</span></Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Иванов Иван Иванович" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Должность <span className="text-red-500">*</span></Label>
+              <Input value={position} onChange={(e) => setPosition(e.target.value)} placeholder="Профессор, доктор наук" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Тип сотрудника</Label>
+              <Select value={staffTypeId} onValueChange={setStaffTypeId}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="— выберите —" />
+                </SelectTrigger>
+                <SelectContent>
+                  {staffTypes.map((t) => (
+                    <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Кафедра / Отдел</Label>
+              <Input value={department} onChange={(e) => setDepartment(e.target.value)} placeholder="Кафедра режиссуры" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Биография</Label>
+              <Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={5} className="resize-none" placeholder="Краткая биография..." />
+            </div>
+            <div className="space-y-1.5">
+              <Label>URL фотографии</Label>
+              <Input type="url" value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://..." />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Порядок отображения</Label>
+              <Input type="number" value={order} onChange={(e) => setOrder(parseInt(e.target.value) || 0)} className="w-32" min={0} />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Должность <span className="text-red-500">*</span></label>
-            <input type="text" value={position} onChange={(e) => setPosition(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" placeholder="Профессор, доктор наук" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Кафедра / Отдел</label>
-            <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" placeholder="Кафедра режиссуры" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Биография</label>
-            <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={5} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none" placeholder="Краткая биография..." />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL фотографии</label>
-            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" placeholder="https://..." />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Порядок отображения</label>
-            <input type="number" value={order} onChange={(e) => setOrder(parseInt(e.target.value) || 0)} className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800" min={0} />
-          </div>
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={isManagement} onChange={(e) => setIsManagement(e.target.checked)} className="sr-only" />
-              <div className={`w-11 h-6 rounded-full transition-colors ${isManagement ? "bg-red-800" : "bg-gray-300"}`}>
-                <div className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform m-0.5 ${isManagement ? "translate-x-5" : "translate-x-0"}`} />
-              </div>
-            </label>
-            <span className="text-sm text-gray-700">
-              {isManagement ? "Руководство" : "Педагогический состав"}
-            </span>
-          </div>
-        </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
-            {loading ? "Сохранение..." : "Добавить"}
-          </button>
-          <Link href="/admin/staff" className="border border-gray-200 text-gray-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 text-sm">
-            Отмена
-          </Link>
-        </div>
-      </form>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+              {loading ? "Сохранение..." : "Добавить"}
+            </Button>
+            <Button asChild variant="outline" className="text-gray-600">
+              <Link href="/admin/staff">Отмена</Link>
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

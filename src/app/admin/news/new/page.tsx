@@ -3,7 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { format as fmtDate } from "date-fns";
+import { ru } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Form } from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 function slugify(text: string) {
   return text
@@ -20,10 +33,11 @@ function slugify(text: string) {
 
 export default function NewNewsPage() {
   const router = useRouter();
+  const form = useForm();
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [slugManual, setSlugManual] = useState(false);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [summary, setSummary] = useState("");
   const [image, setImage] = useState("");
   const [published, setPublished] = useState(false);
@@ -44,7 +58,10 @@ export default function NewNewsPage() {
       const res = await fetch("/api/news", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, slug, date, summary, image, published, modules }),
+        body: JSON.stringify({
+          title, slug, summary, image, published, modules,
+          date: date ? date.toISOString() : new Date().toISOString(),
+        }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -64,100 +81,105 @@ export default function NewNewsPage() {
         <h1 className="text-xl font-bold text-slate-900 mt-2">Создать новость</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>}
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-          <h2 className="font-semibold text-gray-800">Основные данные</h2>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <h2 className="font-semibold text-gray-800">Основные данные</h2>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Заголовок <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              placeholder="Заголовок новости"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              URL (slug) <span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2 items-center">
-              <span className="text-sm text-gray-400 flex-shrink-0">/news/</span>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }}
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
+            <div className="space-y-1.5">
+              <Label>Заголовок <span className="text-red-500">*</span></Label>
+              <Input
+                value={title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Заголовок новости"
                 required
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Дата публикации</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Краткое описание</label>
-            <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              rows={3}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800 resize-none"
-              placeholder="Краткое описание новости..."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-            <input
-              type="url"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-800"
-              placeholder="https://..."
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="sr-only" />
-              <div className={`w-11 h-6 rounded-full transition-colors ${published ? "bg-green-500" : "bg-gray-300"}`}>
-                <div className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform m-0.5 ${published ? "translate-x-5" : "translate-x-0"}`} />
+            <div className="space-y-1.5">
+              <Label>URL (slug) <span className="text-red-500">*</span></Label>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-400 flex-shrink-0">/news/</span>
+                <Input
+                  value={slug}
+                  onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }}
+                  required
+                />
               </div>
-            </label>
-            <span className="text-sm text-gray-700">{published ? "Опубликовано" : "Черновик"}</span>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Дата публикации</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-auto justify-start text-left font-normal">
+                    <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                    {date
+                      ? fmtDate(date, "d MMMM yyyy", { locale: ru })
+                      : <span className="text-muted-foreground">Выберите дату</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Краткое описание</Label>
+              <Textarea
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                rows={3}
+                className="resize-none"
+                placeholder="Краткое описание новости..."
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>URL изображения</Label>
+              <Input
+                type="url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Switch
+                id="published"
+                checked={published}
+                onCheckedChange={setPublished}
+              />
+              <Label htmlFor="published" className="cursor-pointer font-normal">
+                {published ? "Опубликовано" : "Черновик"}
+              </Label>
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-800 mb-1">Содержание новости</h2>
-          <p className="text-xs text-gray-500 mb-4">Добавляйте блоки текста, изображений и других материалов</p>
-          <ModuleBuilder value={modules} onChange={setModules} />
-        </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-gray-800 mb-1">Содержание новости</h2>
+            <p className="text-xs text-gray-500 mb-4">Добавляйте блоки текста, изображений и других материалов</p>
+            <ModuleBuilder value={modules} onChange={setModules} />
+          </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg text-sm">
-            {loading ? "Сохранение..." : "Создать новость"}
-          </button>
-          <Link href="/admin/news" className="border border-gray-200 text-gray-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 text-sm">
-            Отмена
-          </Link>
-        </div>
-      </form>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+              {loading ? "Сохранение..." : "Создать новость"}
+            </Button>
+            <Button asChild variant="outline" className="text-gray-600">
+              <Link href="/admin/news">Отмена</Link>
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

@@ -19,6 +19,53 @@ enum ApplicationStatus {
   REJECTED
 }
 
+// ── Справочники (lookup tables) ────────────────────────────
+
+model StaffType {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  order Int     @default(0)
+  staff Staff[]
+}
+
+model ProgramType {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  order   Int      @default(0)
+  courses Course[]
+}
+
+model LearningLevel {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  order   Int      @default(0)
+  courses Course[]
+}
+
+model LearningFormat {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  order     Int        @default(0)
+  courses   Course[]
+  practices Practice[]
+}
+
+model PracticeCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  order     Int        @default(0)
+  practices Practice[]
+}
+
+model ProjectCategory {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  order    Int       @default(0)
+  projects Project[]
+}
+
+// ── Основные модели ────────────────────────────────────────
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -30,22 +77,28 @@ model User {
 }
 
 model Course {
-  id           Int           @id @default(autoincrement())
-  title        String
-  slug         String        @unique
-  description  String?
-  image        String?
-  published    Boolean       @default(false)
-  modules      Json          @default("[]")
-  lessons      Lesson[]
-  applications Application[]
-  format       String?       // Онлайн / Очно / Смешанный
-  duration     String?       // 36 ак.ч / 3 дня / 72 ч
-  price        String?       // 17 500 ₽/год
-  startDate    DateTime?
-  endDate      DateTime?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id            Int             @id @default(autoincrement())
+  title         String
+  slug          String          @unique
+  description   String?
+  image         String?
+  published     Boolean         @default(false)
+  modules       Json            @default("[]")
+  lessons       Lesson[]
+  applications  Application[]
+  duration      String?
+  price         String?
+  startDate     DateTime?
+  endDate       DateTime?
+  programTypeId Int?
+  programType   ProgramType?    @relation(fields: [programTypeId], references: [id])
+  levelId       Int?
+  level         LearningLevel?  @relation(fields: [levelId], references: [id])
+  formatId      Int?
+  format        LearningFormat? @relation(fields: [formatId], references: [id])
+  teachers      Staff[]         @relation("CourseTeachers")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Lesson {
@@ -78,45 +131,47 @@ model Event {
 }
 
 model Staff {
-  id           Int      @id @default(autoincrement())
-  name         String
-  position     String
-  department   String?
-  bio          String?
-  image        String?
-  isManagement Boolean  @default(false)
-  order        Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          Int        @id @default(autoincrement())
+  name        String
+  position    String
+  department  String?
+  bio         String?
+  image       String?
+  staffTypeId Int?
+  staffType   StaffType? @relation(fields: [staffTypeId], references: [id])
+  order       Int        @default(0)
+  courses     Course[]   @relation("CourseTeachers")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Document {
   id        Int      @id @default(autoincrement())
   title     String
   category  String
-  page      String?  // about page slug: "material", "scholarships", "paid-services", etc.
+  page      String?
   fileUrl   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Application {
-  id       Int               @id @default(autoincrement())
-  type     String            // "course", "event", "contact"
-  status   ApplicationStatus @default(NEW)
-  name     String
-  email    String
-  phone    String?
-  message  String?
+  id        Int               @id @default(autoincrement())
+  type      String
+  status    ApplicationStatus @default(NEW)
+  name      String
+  email     String
+  phone     String?
+  message   String?
   workplace String?
-  jobTitle String?
-  courseId Int?
-  course   Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
-  eventId  Int?
-  event    Event?            @relation(fields: [eventId], references: [id], onDelete: SetNull)
-  meta     Json              @default("{}")
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  jobTitle  String?
+  courseId  Int?
+  course    Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  eventId   Int?
+  event     Event?            @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  meta      Json              @default("{}")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model News {
@@ -133,33 +188,36 @@ model News {
 }
 
 model Practice {
-  id        Int       @id @default(autoincrement())
-  title     String
-  slug      String    @unique
-  summary   String?
-  image     String?
-  published Boolean   @default(false)
-  modules   Json      @default("[]")
-  category  String?   // Практика / Стажировка
-  company   String?   // Организация-партнёр
-  format    String?   // Очно / Онлайн / Смешанный
-  deadline  DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          Int               @id @default(autoincrement())
+  title       String
+  slug        String            @unique
+  summary     String?
+  image       String?
+  published   Boolean           @default(false)
+  modules     Json              @default("[]")
+  categoryId  Int?
+  category    PracticeCategory? @relation(fields: [categoryId], references: [id])
+  company     String?
+  formatId    Int?
+  format      LearningFormat?   @relation(fields: [formatId], references: [id])
+  deadline    DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model Project {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  summary   String?
-  image     String?
-  published Boolean  @default(false)
-  modules   Json     @default("[]")
-  category  String?  // Исследовательский / Прикладной / Студенческий
-  year      Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int              @id @default(autoincrement())
+  title      String
+  slug       String           @unique
+  summary    String?
+  image      String?
+  published  Boolean          @default(false)
+  modules    Json             @default("[]")
+  categoryId Int?
+  category   ProjectCategory? @relation(fields: [categoryId], references: [id])
+  year       Int?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
 }
 
 model NewsletterSubscriber {

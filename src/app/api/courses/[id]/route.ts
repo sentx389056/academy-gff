@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
+const courseInclude = {
+  lessons: { orderBy: { order: "asc" as const } },
+  programType: true,
+  level: true,
+  format: true,
+  teachers: { select: { id: true, name: true, position: true, image: true } },
+};
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -9,7 +17,7 @@ export async function GET(
   const { id } = await params;
   const course = await prisma.course.findUnique({
     where: { id: parseInt(id) },
-    include: { lessons: { orderBy: { order: "asc" } } },
+    include: courseInclude,
   });
 
   if (!course) {
@@ -30,19 +38,29 @@ export async function PUT(
 
   const { id } = await params;
   const body = await request.json();
-  const { title, slug, description, image, published, modules, format, duration, price, startDate, endDate } = body;
+  const {
+    title, slug, description, image, published, modules,
+    duration, price, startDate, endDate,
+    programTypeId, levelId, formatId, teacherIds,
+  } = body;
 
   try {
     const course = await prisma.course.update({
       where: { id: parseInt(id) },
       data: {
         title, slug, description, image, published, modules,
-        format: format || null,
         duration: duration || null,
         price: price || null,
         startDate: startDate ? new Date(startDate) : null,
         endDate: endDate ? new Date(endDate) : null,
+        programTypeId: programTypeId || null,
+        levelId: levelId || null,
+        formatId: formatId || null,
+        teachers: teacherIds !== undefined
+          ? { set: (teacherIds as number[]).map((tid) => ({ id: tid })) }
+          : undefined,
       },
+      include: courseInclude,
     });
     return NextResponse.json(course);
   } catch (error) {

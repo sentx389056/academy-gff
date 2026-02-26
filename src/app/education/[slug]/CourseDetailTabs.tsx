@@ -139,7 +139,7 @@ export default function CourseDetailTabs({ course, modules }: Props) {
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-red-800 data-[state=active]:text-red-800 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-5 py-3 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+            className="rounded-none border-2 active:border-b-red-800"
           >
             {tab.label}
           </TabsTrigger>

@@ -2,12 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
+const courseInclude = {
+  lessons: { orderBy: { order: "asc" as const } },
+  programType: true,
+  level: true,
+  format: true,
+  teachers: { select: { id: true, name: true, position: true, image: true } },
+};
+
 export async function GET() {
   try {
     const courses = await prisma.course.findMany({
       where: { published: true },
       orderBy: { createdAt: "desc" },
-      include: { lessons: { orderBy: { order: "asc" } } },
+      include: courseInclude,
     });
     return NextResponse.json(courses);
   } catch (error) {
@@ -24,7 +32,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { title, slug, description, image, published, modules, format, duration, price, startDate, endDate } = body;
+    const {
+      title, slug, description, image, published, modules,
+      duration, price, startDate, endDate,
+      programTypeId, levelId, formatId, teacherIds,
+    } = body;
 
     if (!title || !slug) {
       return NextResponse.json({ error: "Название и slug обязательны" }, { status: 400 });
@@ -32,13 +44,21 @@ export async function POST(request: NextRequest) {
 
     const course = await prisma.course.create({
       data: {
-        title, slug, description, image, published: published ?? false, modules: modules ?? [],
-        format: format || null,
+        title, slug, description, image,
+        published: published ?? false,
+        modules: modules ?? [],
         duration: duration || null,
         price: price || null,
         startDate: startDate ? new Date(startDate) : null,
         endDate: endDate ? new Date(endDate) : null,
+        programTypeId: programTypeId || null,
+        levelId: levelId || null,
+        formatId: formatId || null,
+        teachers: teacherIds?.length
+          ? { connect: (teacherIds as number[]).map((id) => ({ id })) }
+          : undefined,
       },
+      include: courseInclude,
     });
 
     return NextResponse.json(course, { status: 201 });

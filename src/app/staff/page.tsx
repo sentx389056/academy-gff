@@ -8,7 +8,7 @@ export const metadata = {
 
 export default async function StaffPage() {
   const staff = await prisma.staff.findMany({
-    where: { isManagement: false },
+    where: { staffType: { name: "Педагогический состав" } },
     orderBy: [{ order: "asc" }, { name: "asc" }],
   });
 
