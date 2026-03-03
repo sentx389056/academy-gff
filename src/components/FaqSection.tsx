@@ -72,7 +72,7 @@ export default function FaqSection() {
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
-                  className="border border-slate-200 rounded-xl px-5 data-[state=open]:border-red-800/30 data-[state=open]:bg-red-50/30 transition-colors"
+                  className="px-5  data-[state=open]:bg-red-50/30 transition-colors"
                 >
                   <AccordionTrigger className="text-sm font-semibold text-slate-900 text-left py-4 hover:no-underline hover:text-red-800 transition-colors data-[state=open]:text-red-800">
                     {item.q}

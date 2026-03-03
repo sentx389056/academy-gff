@@ -10,6 +10,8 @@ import ContactForm from "@/components/ContactForm";
 import FaqSection from "@/components/FaqSection";
 import NewsGrid from "@/components/NewsGrid";
 import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
+import {Clock, Mail, MapPin, MoveRight, Phone} from "lucide-react";
 
 const partners = [
     {name: "ГИТИС", logo: "/partners/gitis_2.png"},
@@ -62,15 +64,15 @@ export default async function HomePage() {
                     }}
                 />
 
-                <div className="relative z-10 mx-auto max-w-292.5 w-full px-4 py-28 md:py-36">
-                    <div className="max-w-2xl space-x-12">
-                        <h2 className="inline-block text-2xl font-bold uppercase tracking-widest text-red-400 mb-6">
+                <div className="relative space-y-6 z-10 mx-auto max-w-292.5 w-full px-4 py-28 md:py-36">
+                    <div className="max-w-2xl space-y-3">
+                        <h2 className="inline-block text-2xl sm:text-4xl font-bold uppercase tracking-widest text-red-400 mb-6">
                             Академия Госфильмофонда России
                         </h2>
-                        <h3 className="text-7xl sm:text-8xl md:text-9xl font-extrabold leading-[0.95] mb-7 tracking-tight">
+                        <h3 className="text-xl sm:text-2xl font-extrabold leading-[0.95] mb-7 tracking-tight">
                             Сохраняем кинонаследие страны
                         </h3>
-                        <p className="text-slate-400 text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+                        <p className="text-slate-400 text-base leading-relaxed mb-8 max-w-lg">
                             Профессиональное образование в сфере кинематографа — <br className="hidden md:block"/>
                             от реставрации плёнки до управления архивами.
                         </p>
@@ -95,14 +97,15 @@ export default async function HomePage() {
                     </div>
 
                     {/* Stats bar */}
-                    <div className="pt-10 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-3xl">
+                    <Separator className="max-w-2xl bg-white/10"/>
+                    <div className="grid grid-cols-2 gap-8 sm:flex sm:justify-between max-w-2xl">
                         {[
                             {value: "80+", label: "Лет опыта"},
                             {value: "500+", label: "Выпускников"},
                             {value: "80+", label: "Преподавателей"},
                             {value: "80+", label: "Программ"},
                         ].map((s) => (
-                            <div key={s.label}>
+                            <div className="w-full sm:w-auto" key={s.label}>
                                 <div className="text-3xl md:text-4xl font-bold text-white">{s.value}</div>
                                 <div className="text-xs text-slate-400 mt-1">{s.label}</div>
                             </div>
@@ -114,9 +117,9 @@ export default async function HomePage() {
             {/* ── ВИДЕОЗАСТАВКА ── */}
             <section className="hidden relative overflow-hidden bg-slate-900" style={{minHeight: 440}}>
                 {/*
-          Замените src="/video/intro.mp4" на путь к вашему видеофайлу.
-          Поместите видео в папку /public/video/intro.mp4
-        */}
+                  Замените src="/video/intro.mp4" на путь к вашему видеофайлу.
+                  Поместите видео в папку /public/video/intro.mp4
+                */}
                 <video
                     autoPlay
                     muted
@@ -134,13 +137,13 @@ export default async function HomePage() {
                 {/* Content */}
                 <div className="relative z-10 mx-auto max-w-292.5 px-4 py-20 flex flex-col justify-between min-h-110">
                     <div className="max-w-lg">
-            <span className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-3 block">
-              Наша миссия
-            </span>
+                        <span className="font-semibold uppercase tracking-widest text-red-400 mb-3 block">
+                          Наша миссия
+                        </span>
                         <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
                             Сохраняем традиции<br/>и создаём будущее кино
                         </h2>
-                        <p className="text-slate-300 text-sm leading-relaxed max-w-md">
+                        <p className="text-slate-300  leading-relaxed max-w-md">
                             Академия Госфильмофонда России — ведущее учреждение профессиональной подготовки
                             в области сохранения, изучения и популяризации отечественного кинематографического
                             наследия. Воспитываем специалистов мирового уровня.
@@ -181,7 +184,7 @@ export default async function HomePage() {
                                 href="/education"
                                 className="hidden sm:inline-flex items-center gap-1 text-sm text-red-800 font-medium hover:underline"
                             >
-                                Все программы →
+                                Все программы <MoveRight size={14} />
                             </Link>
                         </div>
 
@@ -206,7 +209,7 @@ export default async function HomePage() {
                             href="/events"
                             className="hidden sm:inline-flex items-center gap-1 text-sm text-red-800 font-medium hover:underline"
                         >
-                            Все события →
+                            Все события <MoveRight size={14} />
                         </Link>
                     </div>
 
@@ -254,7 +257,7 @@ export default async function HomePage() {
                         </div>
                         <Link href="/news"
                               className="hidden sm:inline-flex items-center gap-1 text-sm text-red-800 font-medium hover:underline">
-                            Все новости →
+                            Все новости <MoveRight size={14} />
                         </Link>
                     </div>
                     <NewsGrid news={news} pageSize={3}/>
@@ -267,9 +270,9 @@ export default async function HomePage() {
             {/* ── КОНТАКТНАЯ ИНФОРМАЦИЯ + КАРТА ── */}
             <section className="bg-slate-900 text-white">
                 <div className="mx-auto max-w-292.5 px-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[480px]">
+                    <div className="py-16 grid grid-cols-1  lg:grid-cols-2 gap-8 min-h-[480px]">
                         {/* Left: contacts */}
-                        <div className="py-16 pr-0 lg:pr-16 flex flex-col justify-center">
+                        <div className="pr-0 lg:pr-16 flex flex-col justify-center">
                             <span
                                 className="text-xs font-bold uppercase tracking-widest text-red-400 mb-4 block">Контакты</span>
                             <h2 className="text-2xl md:text-3xl font-bold mb-10">Контактная информация</h2>
@@ -277,14 +280,8 @@ export default async function HomePage() {
                             <div className="space-y-6">
                                 <div className="flex items-start gap-4">
                                     <div
-                                        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg className="w-4.5 h-4.5 text-red-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
+                                        className="w-10 h-10 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                        <MapPin size={18} className={`text-red-400`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Адрес</p>
@@ -297,12 +294,8 @@ export default async function HomePage() {
 
                                 <div className="flex items-start gap-4">
                                     <div
-                                        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg className="w-4.5 h-4.5 text-red-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                        </svg>
+                                        className="w-10 h-10 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                        <Phone size={18} className={`text-red-400`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Телефон</p>
@@ -317,12 +310,8 @@ export default async function HomePage() {
 
                                 <div className="flex items-start gap-4">
                                     <div
-                                        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg className="w-4.5 h-4.5 text-red-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
+                                        className="w-10 h-10 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                        <Mail size={18} className={`text-red-400`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Email</p>
@@ -333,12 +322,8 @@ export default async function HomePage() {
 
                                 <div className="flex items-start gap-4">
                                     <div
-                                        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg className="w-4.5 h-4.5 text-red-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
+                                        className="w-10 h-10 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                        <Clock size={18} className={`text-red-400`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Режим
@@ -362,11 +347,7 @@ export default async function HomePage() {
                             />
                             <div
                                 className="absolute bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm px-5 py-3 flex items-center gap-3">
-                                <svg className="w-3.5 h-3.5 text-red-400 shrink-0" fill="none" stroke="currentColor"
-                                     viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                </svg>
+                                <MapPin size={14} className={`text-red-400`}/>
                                 <p className="text-xs text-slate-400 flex-1">Белые Столбы, Госфильмофонд</p>
                                 <a href="https://yandex.ru/maps/?text=Белые+Столбы+Госфильмофонд" target="_blank"
                                    rel="noopener noreferrer"
@@ -394,11 +375,7 @@ export default async function HomePage() {
                                     className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
                                     <div
                                         className="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-                                        <svg className="w-4 h-4 text-red-800" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                        </svg>
+                                        <Phone size={16} className={`text-red-800`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Телефон</p>
@@ -411,11 +388,7 @@ export default async function HomePage() {
                                     className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
                                     <div
                                         className="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-                                        <svg className="w-4 h-4 text-red-800" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
+                                        <Mail size={16} className={`text-red-800`}/>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Email</p>
@@ -425,9 +398,7 @@ export default async function HomePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100">
-                            <ContactForm/>
-                        </div>
+                        <ContactForm/>
                     </div>
                 </div>
             </section>

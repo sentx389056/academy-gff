@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import SearchDialog from "@/components/SearchDialog";
+import {Eye, Menu, SearchIcon, SquareArrowOutUpRight, UserRound, X} from "lucide-react";
 
 const aboutItems = [
   { label: "Основные сведения", href: "/about" },
@@ -44,7 +45,7 @@ const mainNavItems = [
 ];
 
 type FontSize = "normal" | "large" | "xlarge";
-type ColorScheme = "normal" | "bw" | "wb" | "yb";
+type ColorScheme = "normal" | "bw" | "wb";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -155,16 +156,6 @@ export default function Header() {
               >
                 Ч
               </Button>
-              <Button
-                onClick={() => setColorScheme("yb")}
-                className={`px-2.5 py-1 rounded border transition-colors bg-black text-yellow-300 ${
-                  colorScheme === "yb" ? "border-red-800 ring-1 ring-red-800" : "border-slate-600"
-                }`}
-                aria-label="Жёлтый на чёрном"
-                title="Жёлтый на чёрном"
-              >
-                Ч
-              </Button>
             </div>
 
             <Button
@@ -172,8 +163,8 @@ export default function Header() {
                 setFontSize("normal");
                 setColorScheme("normal");
               }}
-              variant="ghost"
-              className="ml-auto text-slate-400 hover:text-white transition-colors"
+              variant="secondary"
+              className="ml-auto "
             >
               Сбросить
             </Button>
@@ -209,26 +200,23 @@ export default function Header() {
                 {user?.role === "ADMIN" && (
                   <Link
                     href="/admin"
-                    className="hidden sm:inline-flex text-xs font-medium text-white bg-red-800 hover:bg-red-900 px-3 py-1.5 rounded transition-colors"
+                    className="hidden sm:inline-flex text-sm font-medium border-b text-white bg-red-600 "
                   >
-                    Админ
+                    Администрирование
                   </Link>
                 )}
 
                 {/* Accessibility toggle */}
                 <Button
                   onClick={toggleAccessBar}
-                  className={`hidden sm:inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded transition-colors border ${
+                  className={`hidden sm:inline-flex items-center rounded ${
                     accessBar
                       ? "bg-white/20 border-white/40 text-white"
-                      : "border-white/20 text-slate-300 hover:text-white hover:border-white/40"
+                      : "border-white/20  "
                   }`}
                   aria-label="Версия для слабовидящих"
                 >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
+                    <Eye/>
                   <span>Версия для слабовидящих</span>
                 </Button>
 
@@ -242,9 +230,7 @@ export default function Header() {
                     href="/login"
                     className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-red-400 hover:text-red-300 px-3 py-1.5 transition-colors"
                   >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                      <UserRound size={14}/>
                     Личный кабинет
                   </Link>
                 )}
@@ -253,13 +239,11 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="p-2 rounded hover:bg-white/10 transition-colors text-white"
+                  className="p-2 rounded hover:bg-white/10 transition-colors text-white cursor-pointer"
                   onClick={() => setSearchOpen(true)}
                   aria-label="Поиск"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                    <SearchIcon />
                 </Button>
 
                 {/* Mobile hamburger */}
@@ -271,13 +255,9 @@ export default function Header() {
                   aria-label="Открыть меню"
                 >
                   {mobileOpen ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <X size={20}/>
                   ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+                    <Menu size={20}/>
                   )}
                 </Button>
               </div>
@@ -319,18 +299,16 @@ export default function Header() {
               {/* Other nav items */}
               {mainNavItems.map((item) =>
                 item.external ? (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 h-10 px-3 text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 hover:text-white transition-colors whitespace-nowrap shrink-0"
                   >
-                    <span className="max-w-[160px] truncate">{item.label}</span>
-                    <svg className="w-3 h-3 opacity-60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
+                    <span>{item.label}</span>
+                      <SquareArrowOutUpRight className={`opacity-60 shrink-0`} size={12} />
+                  </Link>
                 ) : (
                   <Link
                     key={item.href}
@@ -355,10 +333,7 @@ export default function Header() {
                 className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white py-2 justify-start px-0"
                 onClick={() => { toggleAccessBar(); setMobileOpen(false); }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
+                <Eye size={16}/>
                 Версия для слабовидящих
               </Button>
 
@@ -390,9 +365,7 @@ export default function Header() {
                       onClick={() => setMobileOpen(false)}
                     >
                       {item.label}
-                      <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
+                        <SquareArrowOutUpRight className={`opacity-60 shrink-0`} size={12} />
                     </a>
                   ) : (
                     <Link
