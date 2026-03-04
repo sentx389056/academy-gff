@@ -238,7 +238,7 @@ export default function NewPracticePage() {
           </div>
 
           <div className="flex gap-3">
-            <Button type="submit" disabled={loading} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+            <Button type="submit" disabled={loading}>
               {loading ? "Сохранение..." : "Создать запись"}
             </Button>
             <Button asChild variant="outline" className="text-gray-600">

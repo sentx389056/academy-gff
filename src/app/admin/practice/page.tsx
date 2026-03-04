@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+import { Clipboard } from 'lucide-react';
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import {
@@ -27,7 +28,7 @@ export default async function AdminPracticePage() {
           <h1 className="text-xl font-bold text-slate-900">Практика и стажировки</h1>
           <p className="text-sm text-gray-500">{items.length} записей</p>
         </div>
-        <Button asChild className="bg-red-800 hover:bg-red-900">
+        <Button asChild>
           <Link href="/admin/practice/new">+ Новая запись</Link>
         </Button>
       </div>
@@ -68,10 +69,10 @@ export default async function AdminPracticePage() {
             </TableBody>
           </Table>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-4xl mb-3">📋</div>
+          <div className="flex flex-col justify-center items-center py-16">
+              <Clipboard className="text-gray-500" size={48} />
             <p className="text-gray-500 mb-4">Нет записей о практике</p>
-            <Button asChild className="bg-red-800 hover:bg-red-900">
+            <Button asChild>
               <Link href="/admin/practice/new">+ Создать запись</Link>
             </Button>
           </div>

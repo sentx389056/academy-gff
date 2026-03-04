@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import {
@@ -69,9 +71,9 @@ export default async function AdminDocumentsPage() {
               <TableRow key={doc.id}>
                 <TableCell className="text-slate-400 text-xs">{doc.id}</TableCell>
                 <TableCell>
-                  <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-900 hover:text-red-800 transition-colors">
+                  <Link href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-900 hover:text-red-800 transition-colors">
                     {doc.title}
-                  </a>
+                  </Link>
                 </TableCell>
                 <TableCell className="text-xs text-slate-500">{doc.category}</TableCell>
                 <TableCell>

@@ -1,3 +1,5 @@
+import {Calendar, ChartNoAxesColumnIncreasing, ChevronLeft, Film} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,7 +27,7 @@ export default async function CoursePage({ params }: Props) {
   const { slug } = await params;
   const course = await prisma.course.findUnique({
     where: { slug, published: true },
-    include: { lessons: { orderBy: { order: "asc" } }, programType: true, level: true },
+    include: { lessons: { orderBy: { order: "asc" } }, programType: true, level: true, format: true },
   });
 
   if (!course) notFound();
@@ -41,9 +43,7 @@ export default async function CoursePage({ params }: Props) {
             href="/education"
             className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+              <ChevronLeft size={16} />
             Вернуться назад
           </Link>
         </div>
@@ -63,9 +63,7 @@ export default async function CoursePage({ params }: Props) {
                 />
               ) : (
                 <div className="w-full h-60 lg:h-72 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-                  </svg>
+                  <Film size={64} className="text-white/20" />
                 </div>
               )}
             </div>
@@ -88,17 +86,13 @@ export default async function CoursePage({ params }: Props) {
               <div className="flex flex-wrap gap-2">
                 {course.level && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-full">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
+                      <ChartNoAxesColumnIncreasing strokeWidth={4} size={12}/>
                     Уровень обучения: {course.level.name}
                   </span>
                 )}
                 {course.startDate && course.endDate && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-red-800/10 text-red-800 border border-red-800/20 px-3 py-1 rounded-full">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+                    <Calendar size={12} />
                     {fmtDate(course.startDate, "d MMMM yyyy", { locale: ru })} — {fmtDate(course.endDate, "d MMMM yyyy", { locale: ru })}
                   </span>
                 )}

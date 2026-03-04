@@ -1,3 +1,5 @@
+import {Clipboard, Film} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -27,7 +29,7 @@ export default async function AdminProjectsPage() {
           <h1 className="text-xl font-bold text-slate-900">Проекты</h1>
           <p className="text-sm text-gray-500">{items.length} проектов</p>
         </div>
-        <Button asChild className="bg-red-800 hover:bg-red-900">
+        <Button asChild>
           <Link href="/admin/projects/new">+ Новый проект</Link>
         </Button>
       </div>
@@ -68,10 +70,10 @@ export default async function AdminProjectsPage() {
             </TableBody>
           </Table>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-4xl mb-3">🎞️</div>
+            <div className="flex flex-col justify-center items-center py-16">
+                <Film className="text-gray-500" size={48} />
             <p className="text-gray-500 mb-4">Нет проектов</p>
-            <Button asChild className="bg-red-800 hover:bg-red-900">
+            <Button asChild>
               <Link href="/admin/projects/new">+ Создать проект</Link>
             </Button>
           </div>

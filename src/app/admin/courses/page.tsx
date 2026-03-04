@@ -1,3 +1,5 @@
+import {Library} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -27,7 +29,7 @@ export default async function AdminCoursesPage() {
           <h1 className="text-xl font-bold text-slate-900">Курсы</h1>
           <p className="text-sm text-gray-500">{courses.length} курсов всего</p>
         </div>
-        <Button asChild className="bg-red-800 hover:bg-red-900">
+        <Button asChild>
           <Link href="/admin/courses/new">+ Новый курс</Link>
         </Button>
       </div>
@@ -70,10 +72,10 @@ export default async function AdminCoursesPage() {
             </TableBody>
           </Table>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-4xl mb-3">📚</div>
+          <div className="w-full flex flex-col justify-center items-center py-16">
+                <Library className="text-gray-500" size={48} />
             <p className="text-gray-500 mb-4">Нет курсов. Создайте первый!</p>
-            <Button asChild className="bg-red-800 hover:bg-red-900">
+            <Button asChild>
               <Link href="/admin/courses/new">+ Создать курс</Link>
             </Button>
           </div>

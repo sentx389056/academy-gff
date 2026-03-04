@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { format as fmtDate } from "date-fns";
 import { ru } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import {CalendarIcon, MoveLeft, MoveRight} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,8 @@ type Course = {
   startDate: string | null;
   endDate: string | null;
   teachers: { id: number; name: string; position: string }[];
+  advantages: string[];
+  requirements: string[];
 };
 
 function slugify(text: string) {
@@ -82,6 +84,8 @@ export default function EditCoursePage() {
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [modules, setModules] = useState<Module[]>([]);
   const [teacherIds, setTeacherIds] = useState<number[]>([]);
+  const [advantages, setAdvantages] = useState("");
+  const [requirements, setRequirements] = useState("");
 
   const [programTypes, setProgramTypes] = useState<LookupItem[]>([]);
   const [learningLevels, setLearningLevels] = useState<LookupItem[]>([]);
@@ -126,6 +130,8 @@ export default function EditCoursePage() {
       setEndDate(data.endDate ? new Date(data.endDate) : undefined);
       setModules(Array.isArray(data.modules) ? data.modules : []);
       setTeacherIds(data.teachers?.map((t) => t.id) ?? []);
+      setAdvantages(Array.isArray(data.advantages) ? data.advantages.join("\n") : "");
+      setRequirements(Array.isArray(data.requirements) ? data.requirements.join("\n") : "");
     } catch {
       setError("Не удалось загрузить курс");
     } finally {
@@ -160,6 +166,8 @@ export default function EditCoursePage() {
           startDate: startDate ? startDate.toISOString() : null,
           endDate: endDate ? endDate.toISOString() : null,
           teacherIds,
+          advantages: advantages.split("\n").map((s) => s.trim()).filter(Boolean),
+          requirements: requirements.split("\n").map((s) => s.trim()).filter(Boolean),
         }),
       });
       if (!res.ok) {
@@ -206,18 +214,17 @@ export default function EditCoursePage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href="/admin/courses" className="text-sm text-gray-500 hover:text-red-800">← Назад к курсам</Link>
+          <Link href="/admin/courses" className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800"><MoveLeft size={12}/> Назад к курсам</Link>
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать курс</h1>
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline" size="sm">
-            <Link href={`/education/${slug}`} target="_blank">Просмотр →</Link>
+            <Link href={`/education/${slug}`} target="_blank">Просмотр <MoveRight size={12}/></Link>
           </Button>
           <Button
             onClick={handleDelete}
             variant="outline"
             size="sm"
-            className="text-red-500 border-red-200 hover:bg-red-50 transition-colors"
           >
             Удалить
           </Button>
@@ -363,6 +370,30 @@ export default function EditCoursePage() {
               <Label>Стоимость</Label>
               <Input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="17 500 ₽/год, Бесплатно" />
             </div>
+
+            <div className="space-y-1.5">
+              <Label>Преимущества программы</Label>
+              <p className="text-xs text-gray-400">Каждое преимущество — с новой строки</p>
+              <Textarea
+                value={advantages}
+                onChange={(e) => setAdvantages(e.target.value)}
+                rows={4}
+                className="resize-none"
+                placeholder={"Доступ к архивным фондам Госфильмофонда\nПрактические занятия с профессионалами"}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Требования к поступающим</Label>
+              <p className="text-xs text-gray-400">Каждое требование — с новой строки</p>
+              <Textarea
+                value={requirements}
+                onChange={(e) => setRequirements(e.target.value)}
+                rows={4}
+                className="resize-none"
+                placeholder={"Высшее образование\nОпыт работы от 1 года"}
+              />
+            </div>
           </div>
 
           {/* Преподаватели */}
@@ -411,7 +442,7 @@ export default function EditCoursePage() {
               <h2 className="font-semibold text-gray-800">
                 Уроки <span className="ml-2 text-sm font-normal text-gray-400">({course?.lessons.length || 0})</span>
               </h2>
-              <Button asChild size="sm" className="bg-red-800 hover:bg-red-900 text-xs">
+              <Button asChild size="sm">
                 <Link href={`/admin/courses/${courseId}/lessons/new`}>+ Добавить урок</Link>
               </Button>
             </div>
@@ -437,7 +468,7 @@ export default function EditCoursePage() {
             <Button
               type="submit"
               disabled={saving}
-              className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6"
+              className=""
             >
               {saving ? "Сохранение..." : "Сохранить изменения"}
             </Button>

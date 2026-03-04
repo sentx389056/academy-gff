@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import {Calendar, ChevronLeft, ChevronRight, Clock, Film} from "lucide-react";
 
 interface Course {
   id: number;
@@ -29,7 +30,7 @@ export default function CoursesCarousel({ courses }: Props) {
 
   useEffect(() => {
     if (total <= 1) return;
-    const t = setInterval(next, 6000);
+    const t = setInterval(next, 15000);
     return () => clearInterval(t);
   }, [next, total]);
 
@@ -87,9 +88,7 @@ export default function CoursesCarousel({ courses }: Props) {
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 flex items-center justify-center">
-              <svg className="w-20 h-20 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.8} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-              </svg>
+              <Film size={80} className="text-gray-500" strokeWidth={1} />
             </div>
           )}
           {/* Gradient overlay */}
@@ -125,17 +124,13 @@ export default function CoursesCarousel({ courses }: Props) {
           <div className="flex flex-wrap gap-2 mb-5">
             {course.startDate && (
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full">
-                <svg className="w-3 h-3 text-red-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+                  <Calendar className="text-red-800" size={12} />
                 {new Date(course.startDate).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}
               </span>
             )}
             {course.duration && (
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full">
-                <svg className="w-3 h-3 text-red-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <Clock className="text-red-800" size={12} />
                 {course.duration}
               </span>
             )}
@@ -158,9 +153,7 @@ export default function CoursesCarousel({ courses }: Props) {
               className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors"
             >
               Подробнее
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+                <ChevronRight size={14} />
             </Link>
 
             {total > 1 && (
@@ -178,14 +171,10 @@ export default function CoursesCarousel({ courses }: Props) {
                   ))}
                 </div>
                 <button onClick={prev} aria-label="Предыдущий" className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-slate-400 transition-colors">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
+                    <ChevronLeft size={14} />
                 </button>
                 <button onClick={next} aria-label="Следующий" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 flex items-center justify-center text-white transition-colors">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                    <ChevronRight size={14} />
                 </button>
               </div>
             )}

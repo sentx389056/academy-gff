@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import SearchDialog from "@/components/SearchDialog";
-import {Eye, Menu, SearchIcon, SquareArrowOutUpRight, UserRound, X} from "lucide-react";
+import {Eye, Film, Menu, SearchIcon, SquareArrowOutUpRight, UserRound, X} from "lucide-react";
+import Image from "next/image";
 
 const aboutItems = [
   { label: "Основные сведения", href: "/about" },
@@ -177,19 +178,7 @@ export default function Header() {
             <div className="flex items-center justify-between h-14">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-3 shrink-0">
-                <svg
-                  className="w-7 h-7 text-white shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
-                  />
-                </svg>
+                <Image src={`/logo-w.svg`} alt={`logo`} width={28} height={28} className="text-white shrink-0" />
                 <span className="font-semibold text-sm leading-tight hidden sm:block">
                   Академия Госфильмофонда России
                 </span>
@@ -200,7 +189,7 @@ export default function Header() {
                 {user?.role === "ADMIN" && (
                   <Link
                     href="/admin"
-                    className="hidden sm:inline-flex text-sm font-medium border-b text-white bg-red-600 "
+                    className="hidden sm:inline-flex text-sm font-medium border-b text-white"
                   >
                     Администрирование
                   </Link>
@@ -273,11 +262,11 @@ export default function Header() {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/10 hover:text-white focus:bg-white/10 data-[state=open]:bg-white/10 data-[state=open]:text-white text-xs font-semibold uppercase tracking-wider h-10 px-4 rounded-none">
+                    <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/10 text-xs font-semibold uppercase tracking-wider h-10 px-4 rounded-none">
                       О нас
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="w-72 py-2 bg-white rounded-lg shadow-xl border border-slate-100">
+                      <ul className="w-72 ">
                         {aboutItems.map((item) => (
                           <li key={item.href}>
                             <NavigationMenuLink asChild>

@@ -202,7 +202,7 @@ export default function EditEventPage() {
           </div>
 
           <div className="flex gap-3">
-            <Button type="submit" disabled={saving} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-6">
+            <Button type="submit" disabled={saving}>
               {saving ? "Сохранение..." : "Сохранить"}
             </Button>
           </div>

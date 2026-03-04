@@ -134,7 +134,7 @@ export default function ReferencesPage() {
                         className="h-8 text-sm flex-1"
                         onKeyDown={(e) => e.key === "Enter" && handleRename(key, item.id)}
                       />
-                      <Button size="sm" className="h-8 bg-red-800 hover:bg-red-900 text-white" onClick={() => handleRename(key, item.id)}>
+                      <Button size="sm" onClick={() => handleRename(key, item.id)}>
                         Сохранить
                       </Button>
                       <Button size="sm" variant="ghost" className="h-8" onClick={() =>
@@ -170,7 +170,7 @@ export default function ReferencesPage() {
                 className="h-8 text-sm"
                 onKeyDown={(e) => e.key === "Enter" && handleAdd(key)}
               />
-              <Button size="sm" className="h-8 bg-red-800 hover:bg-red-900 text-white" onClick={() => handleAdd(key)}>
+              <Button size="sm"  onClick={() => handleAdd(key)}>
                 Добавить
               </Button>
             </div>

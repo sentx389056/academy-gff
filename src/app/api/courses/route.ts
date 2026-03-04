@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       title, slug, description, image, published, modules,
       duration, price, startDate, endDate,
       programTypeId, levelId, formatId, teacherIds,
+      advantages, requirements,
     } = body;
 
     if (!title || !slug) {
@@ -47,6 +48,8 @@ export async function POST(request: NextRequest) {
         title, slug, description, image,
         published: published ?? false,
         modules: modules ?? [],
+        advantages: advantages ?? [],
+        requirements: requirements ?? [],
         duration: duration || null,
         price: price || null,
         startDate: startDate ? new Date(startDate) : null,

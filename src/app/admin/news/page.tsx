@@ -1,3 +1,5 @@
+import {Newspaper, UserRound} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -24,7 +26,7 @@ export default async function AdminNewsPage() {
           <h1 className="text-xl font-bold text-slate-900">Новости</h1>
           <p className="text-sm text-gray-500">{news.length} новостей</p>
         </div>
-        <Button asChild className="bg-red-800 hover:bg-red-900">
+        <Button asChild className="">
           <Link href="/admin/news/new">+ Новая новость</Link>
         </Button>
       </div>
@@ -65,10 +67,10 @@ export default async function AdminNewsPage() {
             </TableBody>
           </Table>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-4xl mb-3">📰</div>
+          <div className="flex flex-col justify-center items-center py-16">
+              <Newspaper className="text-gray-500" size={48} />
             <p className="text-gray-500 mb-4">Нет новостей</p>
-            <Button asChild className="bg-red-800 hover:bg-red-900">
+            <Button asChild className="">
               <Link href="/admin/news/new">+ Создать новость</Link>
             </Button>
           </div>

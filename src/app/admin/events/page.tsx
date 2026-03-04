@@ -1,3 +1,5 @@
+import {Clapperboard, Plus} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -26,8 +28,8 @@ export default async function AdminEventsPage() {
           <h1 className="text-xl font-bold text-slate-900">События</h1>
           <p className="text-sm text-gray-500">{events.length} событий</p>
         </div>
-        <Button asChild className="bg-red-800 hover:bg-red-900">
-          <Link href="/admin/events/new">+ Новое событие</Link>
+        <Button asChild>
+          <Link href="/admin/events/new"><Plus size={14} /> Новое событие</Link>
         </Button>
       </div>
 
@@ -69,11 +71,11 @@ export default async function AdminEventsPage() {
             </TableBody>
           </Table>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-4xl mb-3">🎬</div>
+          <div className="w-full flex flex-col justify-center items-center py-16">
+              <Clapperboard className="text-gray-500" size={48} />
             <p className="text-gray-500 mb-4">Нет событий</p>
-            <Button asChild className="bg-red-800 hover:bg-red-900">
-              <Link href="/admin/events/new">+ Создать событие</Link>
+            <Button asChild>
+              <Link href="/admin/events/new"><Plus size={14} /> Создать событие</Link>
             </Button>
           </div>
         )}

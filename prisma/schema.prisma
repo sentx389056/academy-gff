@@ -96,6 +96,8 @@ model Course {
   level         LearningLevel?  @relation(fields: [levelId], references: [id])
   formatId      Int?
   format        LearningFormat? @relation(fields: [formatId], references: [id])
+  advantages    Json            @default("[]")
+  requirements  Json            @default("[]")
   teachers      Staff[]         @relation("CourseTeachers")
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt

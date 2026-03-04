@@ -42,6 +42,7 @@ export async function PUT(
     title, slug, description, image, published, modules,
     duration, price, startDate, endDate,
     programTypeId, levelId, formatId, teacherIds,
+    advantages, requirements,
   } = body;
 
   try {
@@ -49,6 +50,8 @@ export async function PUT(
       where: { id: parseInt(id) },
       data: {
         title, slug, description, image, published, modules,
+        advantages: advantages ?? [],
+        requirements: requirements ?? [],
         duration: duration || null,
         price: price || null,
         startDate: startDate ? new Date(startDate) : null,

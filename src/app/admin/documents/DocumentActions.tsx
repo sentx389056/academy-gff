@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {Plus, Trash2, X} from "lucide-react";
 
 const PAGE_OPTIONS = [
   { value: "about", label: "Основные сведения" },
@@ -61,8 +62,13 @@ export default function DocumentActions({ mode, docId }: Props) {
   const handleDelete = async () => {
     if (!confirm("Удалить документ?")) return;
     setLoading(true);
-    await fetch(`/api/documents/${docId}`, { method: "DELETE" });
+    const res = await fetch(`/api/documents/${docId}`, { method: "DELETE" });
     setLoading(false);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || `Ошибка удаления (${res.status})`);
+      return;
+    }
     router.refresh();
   };
 
@@ -71,13 +77,10 @@ export default function DocumentActions({ mode, docId }: Props) {
       <Button
         variant="ghost"
         size="sm"
-        className="h-7 w-7 p-0 text-slate-400 hover:text-red-800"
         onClick={handleDelete}
         disabled={loading}
       >
-        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
+          <Trash2 size={14} />
       </Button>
     );
   }
@@ -85,8 +88,8 @@ export default function DocumentActions({ mode, docId }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-red-800 hover:bg-red-900 text-white h-9 px-4 text-sm">
-          + Добавить документ
+        <Button className="flex gap-1 items-center">
+            <Plus size={14} /> Добавить документ
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
@@ -139,7 +142,6 @@ export default function DocumentActions({ mode, docId }: Props) {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-red-800 hover:bg-red-900 text-white w-full"
           >
             {loading ? "Сохранение..." : "Добавить"}
           </Button>
