@@ -27,7 +27,7 @@ export default async function CoursePage({ params }: Props) {
   const { slug } = await params;
   const course = await prisma.course.findUnique({
     where: { slug, published: true },
-    include: { lessons: { orderBy: { order: "asc" } }, programType: true, level: true, format: true },
+    include: { lessons: { orderBy: { order: "asc" } }, programType: true, level: true, format: true, teachers: true },
   });
 
   if (!course) notFound();

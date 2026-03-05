@@ -12,12 +12,14 @@ import {BadgeCheck, BadgeRussianRuble, Calendar, Check, CheckCircle, Clipboard, 
 
 type Module = { id: string; type: string; content: Record<string, unknown> };
 type Lesson = { id: number; title: string; slug: string; order: number };
+type Teacher = { id: number; name: string; position: string; bio?: string | null; image?: string | null };
 type Course = {
     id: number;
     title: string;
     slug: string;
     description: string | null;
     lessons: Lesson[];
+    teachers?: Teacher[];
     format?: { name: string } | null;
     duration?: string | null;
     price?: string | null;
@@ -247,7 +249,28 @@ export default function CourseDetailTabs({course, modules}: Props) {
                     {/* Teachers tab */}
                     <TabsContent value="teachers" className="mt-0">
                         <h2 className="text-lg font-bold text-slate-900 mb-4">Преподаватели</h2>
-                        <p className="text-sm text-slate-400">Информация о преподавателях будет добавлена позже.</p>
+                        {course.teachers && course.teachers.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {course.teachers.map((teacher) => (
+                                    <div key={teacher.id} className="flex items-start gap-4 p-4 border border-slate-200 rounded-xl">
+                                        {teacher.image ? (
+                                            <img src={teacher.image} alt={teacher.name} className="w-14 h-14 rounded-full object-cover flex-shrink-0" />
+                                        ) : (
+                                            <div className="w-14 h-14 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0 text-slate-500 font-bold text-lg">
+                                                {teacher.name.charAt(0)}
+                                            </div>
+                                        )}
+                                        <div>
+                                            <p className="font-semibold text-slate-900 text-sm">{teacher.name}</p>
+                                            <p className="text-xs text-slate-500 mt-0.5">{teacher.position}</p>
+                                            {teacher.bio && <p className="text-xs text-slate-400 mt-2 leading-relaxed">{teacher.bio}</p>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-slate-400">Информация о преподавателях будет добавлена позже.</p>
+                        )}
                     </TabsContent>
 
                     {/* Apply tab */}

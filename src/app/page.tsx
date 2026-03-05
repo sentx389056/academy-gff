@@ -11,7 +11,7 @@ import FaqSection from "@/components/FaqSection";
 import NewsGrid from "@/components/NewsGrid";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {Clock, Mail, MapPin, MoveRight, Phone} from "lucide-react";
+import {ChevronRight, Clock, Mail, MapPin, MoveRight, Phone} from "lucide-react";
 
 const partners = [
     {name: "ГИТИС", logo: "/partners/gitis_2.png"},
@@ -80,10 +80,7 @@ export default async function HomePage() {
                             <Button variant="default" size="lg" asChild>
                                 <Link href="/education">
                                     Программы обучения
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                              d="M9 5l7 7-7 7"/>
-                                    </svg>
+                                <ChevronRight size={16}/>
                                 </Link>
                             </Button>
 

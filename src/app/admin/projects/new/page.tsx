@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {MoveLeft} from "lucide-react";
 
 type LookupItem = { id: number; name: string };
 
@@ -91,9 +92,10 @@ export default function NewProjectPage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-6">
-        <Link href="/admin/projects" className="text-sm text-gray-500 hover:text-red-800">
-          ← Назад к проектам
-        </Link>
+          <Link href={`/admin/projects`} className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+              <MoveLeft size={12}/>
+              Назад к проектам
+          </Link>
         <h1 className="text-xl font-bold text-slate-900 mt-2">Создать проект</h1>
       </div>
 

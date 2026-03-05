@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Props {
   page: string;
@@ -47,10 +48,10 @@ export default async function PageDocuments({ page, title = "Документы"
                   {new Date(doc.createdAt).toLocaleDateString("ru-RU")}
                 </TableCell>
                 <TableCell>
-                  <Button asChild size="sm" variant="outline" className="h-7 text-xs border-red-800 text-red-800 hover:bg-red-50">
-                    <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer">
+                  <Button asChild size="sm" variant="default">
+                    <Link href={doc.fileUrl} target="_blank" rel="noopener noreferrer">
                       Скачать
-                    </a>
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>

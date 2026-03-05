@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {MoveLeft, MoveRight} from "lucide-react";
 
 type LookupItem = { id: number; name: string };
 
@@ -122,16 +123,23 @@ export default function EditProjectPage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href="/admin/projects" className="text-sm text-gray-500 hover:text-red-800">← Назад к проектам</Link>
+            <Link href={`/admin/projects`} className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+                <MoveLeft size={12}/>
+                Назад  к проектам
+            </Link>
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать проект</h1>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link href={`/projects/${slug}`} target="_blank">Просмотр →</Link>
-          </Button>
-          <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
-            Удалить
-          </Button>
+            <Button asChild variant="outline" size="sm">
+                <Link href={`/projects/${slug}`} target="_blank">Просмотр <MoveRight size={12}/></Link>
+            </Button>
+            <Button
+                onClick={handleDelete}
+                variant="destructive"
+                size="sm"
+            >
+                Удалить
+            </Button>
         </div>
       </div>
 

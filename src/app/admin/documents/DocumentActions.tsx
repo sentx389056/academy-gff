@@ -22,7 +22,7 @@ import {
 import {Plus, Trash2, X} from "lucide-react";
 
 const PAGE_OPTIONS = [
-  { value: "about", label: "Основные сведения" },
+  { value: "about", label: "Документы" },
   { value: "structure", label: "Структура" },
   { value: "material", label: "Матер.-техн. обеспечение" },
   { value: "scholarships", label: "Стипендии" },

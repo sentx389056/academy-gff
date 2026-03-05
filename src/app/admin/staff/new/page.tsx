@@ -13,6 +13,7 @@ import { Form } from "@/components/ui/form";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import {MoveLeft} from "lucide-react";
 
 type LookupItem = { id: number; name: string };
 
@@ -67,7 +68,10 @@ export default function NewStaffPage() {
   return (
     <div className="p-8 max-w-2xl">
       <div className="mb-6">
-        <Link href="/admin/staff" className="text-sm text-gray-500 hover:text-red-800">← Назад</Link>
+          <Link href="/admin/staff" className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+              <MoveLeft size={12}/>
+              Назад
+          </Link>
         <h1 className="text-xl font-bold text-slate-900 mt-2">Добавить сотрудника</h1>
       </div>
 

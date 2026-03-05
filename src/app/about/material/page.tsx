@@ -16,7 +16,7 @@ export default function MaterialPage() {
       ]}
       title="Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда"
     >
-      <div className="space-y-6 text-gray-700 leading-relaxed max-w-4xl">
+      <div className="space-y-6 text-gray-700 leading-relaxed">
         <section>
           <h2 className="text-xl font-bold text-slate-900 mb-4">
             Учебные помещения
@@ -30,7 +30,7 @@ export default function MaterialPage() {
               { name: "Лекционные аудитории", desc: "5 аудиторий вместимостью от 30 до 100 мест" },
               { name: "Медиатека", desc: "Доступ к архиву Госфильмофонда и специализированным базам данных" },
             ].map((item) => (
-              <div key={item.name} className="border border-gray-200 rounded-xl p-5">
+              <div key={item.name} className="border border-gray-200 rounded-sm p-5">
                 <h3 className="font-semibold text-slate-900 mb-1">{item.name}</h3>
                 <p className="text-sm">{item.desc}</p>
               </div>

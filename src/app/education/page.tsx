@@ -16,22 +16,22 @@ export default async function EducationPage() {
   });
 
   return (
-    <>
-      <section className="bg-slate-900 py-10 text-white">
+    <div className="min-h-screen bg-white">
+      <div className="bg-slate-900 text-white py-14">
         <div className="mx-auto max-w-[1170px] px-4">
-          <nav className="text-xs text-slate-400 mb-3 flex items-center gap-1">
+          <div className="flex items-center gap-2 text-slate-400 text-sm mb-3">
             <Link href="/" className="hover:text-white transition-colors">Главная</Link>
             <span>/</span>
-            <span>Программы обучения</span>
-          </nav>
-          <h1 className="text-3xl md:text-4xl font-bold">Программы обучения</h1>
-          <p className="text-slate-400 mt-2 text-sm">
-            Профессиональные курсы в области киноискусства и наследия
+            <span className="text-white">Программы обучения</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3">Программы обучения</h1>
+          <p className="text-slate-400 max-w-2xl">
+            Профессиональные курсы и образовательные программы в области киноискусства и сохранения кинонаследия.
           </p>
         </div>
-      </section>
+      </div>
 
-      <div className="mx-auto max-w-[1170px] px-4 py-8">
+      <div className="mx-auto max-w-[1170px] px-4 py-12">
         {courses.length > 0 ? (
           <div className="flex flex-col gap-4">
             {courses.map((course) => (
@@ -91,6 +91,6 @@ export default async function EducationPage() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

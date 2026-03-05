@@ -1,3 +1,5 @@
+import {BriefcaseBusiness, Mail, Phone, UserRound} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -59,9 +61,7 @@ function ManagementCard({ person }: { person: StaffMember }) {
       {/* Role title header */}
       <div className="flex items-center gap-3 px-5 py-4 bg-slate-50 border-b border-slate-200">
         <div className="w-8 h-8 rounded-full bg-red-800/10 flex items-center justify-center flex-shrink-0">
-          <svg className="w-4 h-4 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
+            <UserRound className="text-red-800" size={16} />
         </div>
         <h3 className="font-bold text-slate-900">{person.position}</h3>
       </div>
@@ -70,9 +70,7 @@ function ManagementCard({ person }: { person: StaffMember }) {
         <div>
           {/* Name */}
           <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-            <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+              <UserRound className="text-red-800 mt-0.5" size={16} />
             <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
               <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Фамилия, имя, отчество</span>
               <span className="text-sm font-semibold text-slate-900">{person.name}</span>
@@ -81,9 +79,7 @@ function ManagementCard({ person }: { person: StaffMember }) {
 
           {/* Position */}
           <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-            <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+              <BriefcaseBusiness className="text-red-800 mt-0.5" size={16} />
             <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
               <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Должность</span>
               <span className="text-sm font-medium text-slate-700">{person.position}</span>
@@ -92,23 +88,19 @@ function ManagementCard({ person }: { person: StaffMember }) {
 
           {/* Phone */}
           <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-            <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
+              <Phone className="text-red-800 mt-0.5" size={16} />
             <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
               <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Контактный телефон</span>
-              <a href="tel:+74951234567" className="text-sm font-medium text-red-800 hover:underline">+7 (495) 123-45-67</a>
+              <Link href="tel:+74951234567" className="text-sm font-medium text-red-800 hover:underline">+7 (495) 123-45-67</Link>
             </div>
           </div>
 
           {/* Email */}
           <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-            <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+              <Mail className="text-red-800 mt-0.5" size={16} />
             <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
               <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Адрес электронной почты</span>
-              <a href="mailto:rector@academy.ru" className="text-sm font-medium text-red-800 hover:underline">rector@academy.ru</a>
+              <Link href="mailto:rector@academy.ru" className="text-sm font-medium text-red-800 hover:underline">rector@academy.ru</Link>
             </div>
           </div>
         </div>

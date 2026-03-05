@@ -9,6 +9,7 @@ import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Form} from "@/components/ui/form";
 import Link from "next/link";
+import {CircleCheck} from "lucide-react";
 
 export default function ContactForm() {
     const form = useForm();
@@ -45,11 +46,7 @@ export default function ContactForm() {
     if (status === "success") {
         return (
             <div className="bg-white rounded-xl p-8 text-center">
-                <svg className="w-12 h-12 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor"
-                     viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
+                <CircleCheck className="text-green-600 mx-auto mb-3" size={48}/>
                 <p className="font-semibold text-slate-900 text-lg">Сообщение отправлено!</p>
                 <p className="text-slate-500 text-sm mt-1">Мы свяжемся с вами в ближайшее время.</p>
             </div>

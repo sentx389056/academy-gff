@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { format as fmtDate } from "date-fns";
 import { ru } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import {CalendarIcon, MoveLeft, MoveRight} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
 import { Input } from "@/components/ui/input";
@@ -138,16 +138,23 @@ export default function EditPracticePage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href="/admin/practice" className="text-sm text-gray-500 hover:text-red-800">← Назад к практике</Link>
+            <Link href={`/admin/practice`} className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+                <MoveLeft size={12}/>
+                Назад к практике
+            </Link>
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать запись</h1>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link href={`/practice/${slug}`} target="_blank">Просмотр →</Link>
-          </Button>
-          <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
-            Удалить
-          </Button>
+            <Button asChild variant="outline" size="sm">
+                <Link href={`/practice/${slug}`} target="_blank">Просмотр <MoveRight size={12}/></Link>
+            </Button>
+            <Button
+                onClick={handleDelete}
+                variant="destructive"
+                size="sm"
+            >
+                Удалить
+            </Button>
         </div>
       </div>
 

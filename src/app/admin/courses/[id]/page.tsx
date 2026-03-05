@@ -8,6 +8,7 @@ import { ru } from "date-fns/locale";
 import {CalendarIcon, MoveLeft, MoveRight} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -205,7 +206,10 @@ export default function EditCoursePage() {
     return (
       <div className="p-8">
         <p className="text-red-500">{error || "Курс не найден"}</p>
-        <Link href="/admin/courses" className="text-sm text-red-800 hover:underline mt-2 block">← Назад</Link>
+          <Link href="/admin/courses" className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+              <MoveLeft size={12}/>
+              Назад
+          </Link>
       </div>
     );
   }
@@ -223,7 +227,7 @@ export default function EditCoursePage() {
           </Button>
           <Button
             onClick={handleDelete}
-            variant="outline"
+            variant="destructive"
             size="sm"
           >
             Удалить
@@ -413,11 +417,9 @@ export default function EditCoursePage() {
                         : "border-gray-100 hover:bg-gray-50"
                     }`}
                   >
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       checked={teacherIds.includes(person.id)}
-                      onChange={() => toggleTeacher(person.id)}
-                      className="accent-red-800"
+                      onCheckedChange={() => toggleTeacher(person.id)}
                     />
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-gray-800 truncate">{person.name}</p>

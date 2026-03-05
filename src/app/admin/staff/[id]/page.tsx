@@ -13,6 +13,7 @@ import { Form } from "@/components/ui/form";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import {MoveLeft} from "lucide-react";
 
 type LookupItem = { id: number; name: string };
 
@@ -100,12 +101,19 @@ export default function EditStaffPage() {
     <div className="p-8 max-w-2xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href="/admin/staff" className="text-sm text-gray-500 hover:text-red-800">← Назад</Link>
+            <Link href="/admin/staff" className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+                <MoveLeft size={12}/>
+                Назад
+            </Link>
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать сотрудника</h1>
         </div>
-        <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
-          Удалить
-        </Button>
+          <Button
+              onClick={handleDelete}
+              variant="destructive"
+              size="sm"
+          >
+              Удалить
+          </Button>
       </div>
 
       <Form {...form}>

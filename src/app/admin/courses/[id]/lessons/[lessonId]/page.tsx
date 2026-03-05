@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import {MoveLeft} from "lucide-react";
 
 export default function EditLessonPage() {
   const params = useParams();
@@ -72,9 +73,10 @@ export default function EditLessonPage() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <Link href={`/admin/courses/${courseId}`} className="text-sm text-gray-500 hover:text-red-800">
-            ← Назад к курсу
-          </Link>
+            <Link href={`/admin/courses/${courseId}`} className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+                <MoveLeft size={12}/>
+                Назад к курсу
+            </Link>
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать урок</h1>
         </div>
         <button

@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { format as fmtDate } from "date-fns";
 import { ru } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import {CalendarIcon, MoveLeft} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -126,7 +127,10 @@ export default function NewCoursePage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-6">
-        <Link href="/admin/courses" className="text-sm text-gray-500 hover:text-red-800">← Назад к курсам</Link>
+          <Link href={`/admin/courses/`} className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+              <MoveLeft size={12}/>
+              Назад к курсам
+          </Link>
         <h1 className="text-xl font-bold text-slate-900 mt-2">Создать новый курс</h1>
       </div>
 
@@ -299,11 +303,9 @@ export default function NewCoursePage() {
                         : "border-gray-100 hover:bg-gray-50"
                     }`}
                   >
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       checked={teacherIds.includes(person.id)}
-                      onChange={() => toggleTeacher(person.id)}
-                      className="accent-red-800"
+                      onCheckedChange={() => toggleTeacher(person.id)}
                     />
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-gray-800 truncate">{person.name}</p>

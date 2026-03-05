@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import Link from "next/link";
+import {CircleCheck} from "lucide-react";
 
 export default function NewsletterBlock() {
     const [email, setEmail] = useState("");
@@ -47,11 +48,7 @@ export default function NewsletterBlock() {
                     <div className="w-full lg:max-w-sm">
                         {status === "success" ? (
                             <div className="bg-white/10 rounded-xl p-6 text-center">
-                                <svg className="w-10 h-10 text-white mx-auto mb-3" fill="none" stroke="currentColor"
-                                     viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
+                                <CircleCheck className="text-white mx-auto mb-3" size={48}/>
                                 <p className="font-semibold text-lg">Вы подписаны!</p>
                                 <p className="text-slate-400 text-sm mt-1">Спасибо, мы будем вас информировать.</p>
                             </div>

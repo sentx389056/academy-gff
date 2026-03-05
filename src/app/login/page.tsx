@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-sm">
         <div className="bg-white rounded-xl shadow-md p-8 border border-slate-100">
           <h1 className="text-xl font-semibold text-slate-900 mb-6">
             Привет, с возвращением!
@@ -65,7 +65,7 @@ export default function LoginPage() {
               className="border-slate-200"
             />
 
-            <div className="flex items-center justify-end">
+            <div className="hidden flex items-center justify-end">
               <Link href="#" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
                 Забыли пароль?
               </Link>
@@ -74,13 +74,13 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-red-800 hover:bg-red-900 text-white font-semibold py-3 rounded-lg mt-1 h-auto"
+
             >
               {loading ? "Вход..." : "Войти"}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="hidden text-center text-sm text-slate-500 mt-5">
             У вас еще нет учетной записи?{" "}
             <Link href="#" className="text-red-800 font-medium hover:underline">
               Зарегистрироваться

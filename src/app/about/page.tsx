@@ -1,3 +1,5 @@
+import {Building, Building2, ChevronRight} from "lucide-react";
+
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import PageDocuments from "@/components/PageDocuments";
@@ -18,9 +20,7 @@ function InfoBlock({
       {/* Block header */}
       <div className="flex items-center gap-3 px-5 py-3.5 bg-slate-50 border-b border-slate-200">
         <div className="w-7 h-7 rounded-full bg-red-800/10 flex items-center justify-center flex-shrink-0">
-          <svg className="w-3.5 h-3.5 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
+            <Building className={`text-red-800`} size={14} />
         </div>
         <h3 className="font-semibold text-slate-900 text-sm">{title}</h3>
       </div>
@@ -183,9 +183,7 @@ export default function AboutPage() {
                 href={s.href}
                 className="flex items-center gap-3 p-3.5 border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-red-800/30 hover:text-red-800 transition-all group text-sm font-medium text-slate-700"
               >
-                <svg className="w-4 h-4 text-red-800 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                  <ChevronRight className={`text-red-800`} size={16} />
                 {s.label}
               </Link>
             ))}

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { format as fmtDate } from "date-fns";
 import { ru } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import {CalendarIcon, MoveLeft} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ModuleBuilder, { Module } from "@/components/admin/ModuleBuilder";
 import { Input } from "@/components/ui/input";
@@ -83,9 +83,10 @@ export default function NewEventPage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-6">
-        <Link href="/admin/events" className="text-sm text-gray-500 hover:text-red-800">
-          ← Назад к событиям
-        </Link>
+          <Link href="/admin/events" className="flex gap-2 items-center text-sm text-gray-500 hover:text-red-800">
+              <MoveLeft size={12}/>
+              Назад к событиям
+          </Link>
         <h1 className="text-xl font-bold text-slate-900 mt-2">Создать новое событие</h1>
       </div>
 
