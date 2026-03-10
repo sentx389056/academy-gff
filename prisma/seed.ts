@@ -25,6 +25,12 @@ const usersData = [
         password: "Kpiomb28",
         role: "ADMIN" as const,
     },
+    {
+        name: "a_admin",
+        email: "hehtel.as@gff-rf.ru",
+        password: "Keypah124",
+        role: "ADMIN" as const,
+    },
 ];
 
 async function main() {

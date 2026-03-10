@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import SearchDialog from "@/components/SearchDialog";
-import {Eye, Film, Menu, SearchIcon, SquareArrowOutUpRight, UserRound, X} from "lucide-react";
+import {Eye, Film, Glasses, Menu, SearchIcon, SquareArrowOutUpRight, UserRound, X} from "lucide-react";
 import Image from "next/image";
 
 const aboutItems = [
@@ -195,20 +195,6 @@ export default function Header() {
                   </Link>
                 )}
 
-                {/* Accessibility toggle */}
-                <Button
-                  onClick={toggleAccessBar}
-                  className={`hidden sm:inline-flex items-center rounded ${
-                    accessBar
-                      ? "bg-white/20 border-white/40 text-white"
-                      : "border-white/20  "
-                  }`}
-                  aria-label="Версия для слабовидящих"
-                >
-                    <Eye/>
-                  <span>Версия для слабовидящих</span>
-                </Button>
-
                 {/* Personal account */}
                 {user ? (
                   <span className="hidden sm:inline-flex text-xs font-semibold text-red-400 px-3 py-1.5 max-w-[140px] truncate">
@@ -233,6 +219,17 @@ export default function Header() {
                   aria-label="Поиск"
                 >
                     <SearchIcon />
+                </Button>
+                {/* Accessibility toggle */}
+                <Button
+                    onClick={toggleAccessBar}
+                    variant="ghost"
+                    size="icon"
+                    className={`rounded-sm cursor-pointer active:bg-accent active:text-accent-foreground`}
+                    aria-label="Версия для слабовидящих"
+                >
+                  <Glasses/>
+                  <span className="hidden">Версия для слабовидящих</span>
                 </Button>
 
                 {/* Mobile hamburger */}
