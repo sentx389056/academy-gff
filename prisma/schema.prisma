@@ -133,18 +133,22 @@ model Event {
 }
 
 model Staff {
-  id          Int        @id @default(autoincrement())
-  name        String
-  position    String
-  department  String?
-  bio         String?
-  image       String?
-  staffTypeId Int?
-  staffType   StaffType? @relation(fields: [staffTypeId], references: [id])
-  order       Int        @default(0)
-  courses     Course[]   @relation("CourseTeachers")
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id           Int        @id @default(autoincrement())
+  name         String
+  position     String
+  department   String?
+  bio          String?
+  image        String?
+  phone        String?
+  hidePhone    Boolean    @default(false)
+  email        String?
+  achievements String?
+  staffTypeId  Int?
+  staffType    StaffType? @relation(fields: [staffTypeId], references: [id])
+  order        Int        @default(0)
+  courses      Course[]   @relation("CourseTeachers")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Document {

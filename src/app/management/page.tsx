@@ -29,7 +29,7 @@ export default async function ManagementPage() {
 
       <div className="mx-auto max-w-[1170px] px-4 py-8">
         {management.length > 0 ? (
-          <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {management.map((person) => (
               <ManagementCard key={person.id} person={person} />
             ))}
@@ -53,6 +53,10 @@ type StaffMember = {
   department: string | null;
   bio: string | null;
   image: string | null;
+  phone: string | null;
+  hidePhone: boolean;
+  email: string | null;
+  achievements: string | null;
 };
 
 function ManagementCard({ person }: { person: StaffMember }) {
@@ -87,22 +91,26 @@ function ManagementCard({ person }: { person: StaffMember }) {
           </div>
 
           {/* Phone */}
-          <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-              <Phone className="text-red-800 mt-0.5" size={16} />
-            <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
-              <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Контактный телефон</span>
-              <Link href="tel:+74951234567" className="text-sm font-medium text-red-800 hover:underline">+7 (495) 123-45-67</Link>
+          {person.phone && !person.hidePhone && (
+            <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
+                <Phone className="text-red-800 mt-0.5" size={16} />
+              <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
+                <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Контактный телефон</span>
+                <Link href={`tel:${person.phone}`} className="text-sm font-medium text-red-800 hover:underline">{person.phone}</Link>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Email */}
-          <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
-              <Mail className="text-red-800 mt-0.5" size={16} />
-            <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
-              <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Адрес электронной почты</span>
-              <Link href="mailto:rector@academy.ru" className="text-sm font-medium text-red-800 hover:underline">rector@academy.ru</Link>
+          {person.email && (
+            <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
+                <Mail className="text-red-800 mt-0.5" size={16} />
+              <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
+                <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Адрес электронной почты</span>
+                <Link href={`mailto:${person.email}`} className="text-sm font-medium text-red-800 hover:underline">{person.email}</Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div>
@@ -120,15 +128,28 @@ function ManagementCard({ person }: { person: StaffMember }) {
             </div>
           )}
 
-          {/* Bio / Achievements */}
+          {/* Bio */}
           {person.bio && (
             <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
               <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
               <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
-                <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Достижения и награды</span>
+                <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Биография</span>
                 <span className="text-sm font-medium text-slate-700 whitespace-pre-line">{person.bio}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Achievements */}
+          {person.achievements && (
+            <div className="flex items-start gap-3 py-2.5 border-b border-slate-100">
+              <svg className="w-4 h-4 text-red-800 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+              <div className="flex flex-col sm:flex-row sm:gap-4 flex-1">
+                <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">Достижения и результаты</span>
+                <span className="text-sm font-medium text-slate-700 whitespace-pre-line">{person.achievements}</span>
               </div>
             </div>
           )}

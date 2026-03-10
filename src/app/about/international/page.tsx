@@ -30,7 +30,7 @@ export default function InternationalPage() {
               { org: "Польская киношкола в Лодзи", country: "Польша" },
               { org: "Венская киноакадемия", country: "Австрия" },
             ].map((partner) => (
-              <div key={partner.org} className="border border-gray-200 rounded-xl p-4">
+              <div key={partner.org} className="border border-gray-200 rounded-sm p-4">
                 <div className="font-medium text-slate-900 text-sm">{partner.org}</div>
                 <div className="text-xs text-gray-400 mt-1">{partner.country}</div>
               </div>

@@ -1,4 +1,4 @@
-import {BookOpen, BriefcaseBusiness, FileText, UserRound} from "lucide-react";
+import {BookOpen, BriefcaseBusiness, FileText, Mail, Phone, UserRound} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 import Link from "next/link";
@@ -29,7 +29,7 @@ export default async function StaffPage() {
 
       <div className="mx-auto max-w-[1170px] px-4 py-8">
         {staff.length > 0 ? (
-          <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {staff.map((person) => (
               <StaffRow key={person.id} person={person} />
             ))}
@@ -53,9 +53,13 @@ type StaffMember = {
   department: string | null;
   bio: string | null;
   image: string | null;
+  phone: string | null;
+  hidePhone: boolean;
+  email: string | null;
+  achievements: string | null;
 };
 
-function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function InfoRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
       <div className="w-5 h-5 flex items-center justify-center text-red-800 flex-shrink-0 mt-0.5">
@@ -63,7 +67,7 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
       </div>
       <div className="flex flex-col sm:flex-row sm:gap-4 flex-1 min-w-0">
         <span className="text-xs text-slate-400 sm:w-52 flex-shrink-0 pt-0.5">{label}</span>
-        <span className="text-sm text-slate-700 font-medium break-words">{value}</span>
+        <span className="text-sm text-slate-700 font-medium break-words">{children}</span>
       </div>
     </div>
   );
@@ -80,30 +84,33 @@ function StaffRow({ person }: { person: StaffMember }) {
         <h3 className="font-bold text-slate-900 break-words min-w-0">{person.name}</h3>
       </div>
       <div className="px-5 py-3">
-        <InfoRow
-          icon={
-              <BriefcaseBusiness className="text-red-800" size={16} />
-          }
-          label="Занимаемая должность"
-          value={person.position}
-        />
+        <InfoRow icon={<BriefcaseBusiness className="text-red-800" size={16} />} label="Занимаемая должность">
+          {person.position}
+        </InfoRow>
         {person.department && (
-          <InfoRow
-            icon={
-                <BookOpen className="text-red-800" size={16} />
-            }
-            label="Преподаваемые предметы / курсы"
-            value={person.department}
-          />
+          <InfoRow icon={<BookOpen className="text-red-800" size={16} />} label="Преподаваемые предметы / курсы">
+            {person.department}
+          </InfoRow>
+        )}
+        {person.phone && !person.hidePhone && (
+          <InfoRow icon={<Phone className="text-red-800" size={16} />} label="Контактный телефон">
+            <a href={`tel:${person.phone}`} className="text-red-800 hover:underline">{person.phone}</a>
+          </InfoRow>
+        )}
+        {person.email && (
+          <InfoRow icon={<Mail className="text-red-800" size={16} />} label="Электронная почта">
+            <a href={`mailto:${person.email}`} className="text-red-800 hover:underline">{person.email}</a>
+          </InfoRow>
         )}
         {person.bio && (
-          <InfoRow
-            icon={
-                <FileText className="text-red-800" size={16} />
-            }
-            label="Дополнительная информация"
-            value={person.bio}
-          />
+          <InfoRow icon={<FileText className="text-red-800" size={16} />} label="Биография">
+            {person.bio}
+          </InfoRow>
+        )}
+        {person.achievements && (
+          <InfoRow icon={<FileText className="text-red-800" size={16} />} label="Достижения и результаты">
+            {person.achievements}
+          </InfoRow>
         )}
       </div>
     </div>

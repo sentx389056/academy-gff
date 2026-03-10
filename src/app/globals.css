@@ -138,6 +138,17 @@ body {
   }
 }
 
+/* ── Timeline animation ── */
+[data-animate] {
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* ── Accessibility mode ── */
 html.a11y-font-large  { zoom: 1.1; }
 html.a11y-font-xlarge { zoom: 1.3; }

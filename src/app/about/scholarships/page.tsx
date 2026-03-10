@@ -28,7 +28,7 @@ export default function ScholarshipsPage() {
             { title: "Материальная помощь", desc: "Единовременная выплата в трудных жизненных ситуациях из стипендиального фонда" },
             { title: "Льготное питание", desc: "Дотации на питание для льготных категорий обучающихся" },
           ].map((item) => (
-            <div key={item.title} className="border border-gray-200 rounded-xl p-5">
+            <div key={item.title} className="border border-gray-200 rounded-sm p-5">
               <h3 className="font-semibold text-red-800 mb-2">{item.title}</h3>
               <p className="text-sm">{item.desc}</p>
             </div>

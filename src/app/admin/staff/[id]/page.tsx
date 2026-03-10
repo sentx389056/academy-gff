@@ -13,6 +13,7 @@ import { Form } from "@/components/ui/form";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import {MoveLeft} from "lucide-react";
 
 type LookupItem = { id: number; name: string };
@@ -28,6 +29,10 @@ export default function EditStaffPage() {
   const [department, setDepartment] = useState("");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState("");
+  const [phone, setPhone] = useState("");
+  const [hidePhone, setHidePhone] = useState(false);
+  const [email, setEmail] = useState("");
+  const [achievements, setAchievements] = useState("");
   const [staffTypeId, setStaffTypeId] = useState<string>("");
   const [order, setOrder] = useState(0);
   const [staffTypes, setStaffTypes] = useState<LookupItem[]>([]);
@@ -53,6 +58,10 @@ export default function EditStaffPage() {
       setDepartment(person.department || "");
       setBio(person.bio || "");
       setImage(person.image || "");
+      setPhone(person.phone || "");
+      setHidePhone(person.hidePhone ?? false);
+      setEmail(person.email || "");
+      setAchievements(person.achievements || "");
       setStaffTypeId(person.staffTypeId ? String(person.staffTypeId) : "");
       setOrder(person.order);
     } catch {
@@ -76,6 +85,7 @@ export default function EditStaffPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name, position, department, bio, image,
+          phone, hidePhone, email, achievements,
           staffTypeId: staffTypeId ? parseInt(staffTypeId) : null,
           order,
         }),
@@ -158,6 +168,26 @@ export default function EditStaffPage() {
             <div className="space-y-1.5">
               <Label>Биография</Label>
               <Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={5} className="resize-none" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Телефон</Label>
+              <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 (999) 000-00-00" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="hidePhone"
+                checked={hidePhone}
+                onCheckedChange={(v) => setHidePhone(!!v)}
+              />
+              <Label htmlFor="hidePhone" className="font-normal cursor-pointer">Скрыть номер телефона на сайте</Label>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Электронная почта</Label>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="example@academy.ru" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Достижения / Результаты</Label>
+              <Textarea value={achievements} onChange={(e) => setAchievements(e.target.value)} rows={4} className="resize-none" placeholder="Научные публикации, награды, достижения..." />
             </div>
             <div className="space-y-1.5">
               <Label>URL фото</Label>

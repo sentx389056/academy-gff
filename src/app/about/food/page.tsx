@@ -23,7 +23,7 @@ export default function FoodPage() {
         </p>
         <section>
           <h2 className="text-xl font-bold text-slate-900 mb-4">Столовая</h2>
-          <div className="border border-gray-200 rounded-xl p-5 space-y-3">
+          <div className="border border-gray-200 rounded-sm p-5 space-y-3">
             <div className="flex gap-4 text-sm">
               <div className="font-semibold text-slate-900 w-32 flex-shrink-0">Расположение:</div>
               <div>Главный корпус, 1 этаж</div>

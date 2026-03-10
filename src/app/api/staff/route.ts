@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, position, department, bio, image, staffTypeId, order } = body;
+  const { name, position, department, bio, image, phone, hidePhone, email, achievements, staffTypeId, order } = body;
 
   if (!name || !position) {
     return NextResponse.json({ error: "Имя и должность обязательны" }, { status: 400 });
@@ -26,6 +26,10 @@ export async function POST(request: NextRequest) {
   const person = await prisma.staff.create({
     data: {
       name, position, department, bio, image,
+      phone: phone || null,
+      hidePhone: hidePhone ?? false,
+      email: email || null,
+      achievements: achievements || null,
       staffTypeId: staffTypeId || null,
       order: order ?? 0,
     },
