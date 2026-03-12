@@ -337,7 +337,7 @@ export default async function HomePage() {
                             className="relative min-h-72 lg:min-h-0 border-t lg:border-t-0 lg:border-l border-white/10">
                             <iframe
                                 title="Карта проезда"
-                                src="https://www.openstreetmap.org/export/embed.html?bbox=37.83558905124664%2C55.324707119708854%2C37.83872991800309%2C55.32590346653728&amp;layer=mapnik&amp;marker=55.32530529763677%2C37.83715948462486"
+                                src="https://yandex.ru/map-widget/v1/?um=constructor%3A35fbe91c2a4f0201d0cf380338b92b05c1837f666052b62586755bc568973015&amp;source=constructor"
                                 className="absolute inset-0 w-full h-full"
                                 style={{border: 0}}
                                 loading="lazy"
