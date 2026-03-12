@@ -337,7 +337,7 @@ export default async function HomePage() {
                             className="relative min-h-72 lg:min-h-0 border-t lg:border-t-0 lg:border-l border-white/10">
                             <iframe
                                 title="Карта проезда"
-                                src="https://yandex.ru/map-widget/v1/?um=constructor%3A35fbe91c2a4f0201d0cf380338b92b05c1837f666052b62586755bc568973015&amp;source=constructor"
+                                src="https://yandex.ru/map-widget/v1/?um=constructor%3A54aa8ffbb4c5643c5eb1a6dbaef6c7c2ce67b470b0889137c5325179a973863e&amp;source=constructor"
                                 className="absolute inset-0 w-full h-full"
                                 style={{border: 0}}
                                 loading="lazy"
