@@ -8,6 +8,7 @@ const courseInclude = {
   level: true,
   format: true,
   teachers: { select: { id: true, name: true, position: true, image: true } },
+  groups: { select: { id: true, name: true } },
 };
 
 export async function GET(
@@ -43,6 +44,7 @@ export async function PUT(
     duration, price, startDate, endDate,
     programTypeId, levelId, formatId, teacherIds,
     advantages, requirements,
+    accessLevel, groupIds,
   } = body;
 
   try {
@@ -59,8 +61,12 @@ export async function PUT(
         programTypeId: programTypeId || null,
         levelId: levelId || null,
         formatId: formatId || null,
+        accessLevel: accessLevel ?? "PUBLIC",
         teachers: teacherIds !== undefined
           ? { set: (teacherIds as number[]).map((tid) => ({ id: tid })) }
+          : undefined,
+        groups: groupIds !== undefined
+          ? { set: (groupIds as number[]).map((gid) => ({ id: gid })) }
           : undefined,
       },
       include: courseInclude,

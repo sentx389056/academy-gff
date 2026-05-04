@@ -8,10 +8,13 @@ import {
     Calendar,
     File,
     FileText,
+    GraduationCap,
     Lightbulb,
     Menu,
-    Newspaper, SquareArrowOutUpRight,
-    UserRound
+    Newspaper,
+    SquareArrowOutUpRight,
+    UserRound,
+    Users,
 } from "lucide-react";
 
 export default async function AdminLayout({
@@ -95,6 +98,24 @@ export default async function AdminLayout({
               {item.label}
             </Link>
           ))}
+
+          <p className="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">
+            Пользователи
+          </p>
+          <Link
+            href="/admin/users"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <GraduationCap size={16} />
+            Пользователи
+          </Link>
+          <Link
+            href="/admin/groups"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <Users size={16} />
+            Группы
+          </Link>
 
           <p className="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">
             Настройки

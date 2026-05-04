@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import CourseImportExport from "@/components/admin/CourseImportExport";
 
 export const metadata = { title: "Курсы — Панель управления" };
 
@@ -24,14 +25,17 @@ export default async function AdminCoursesPage() {
 
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold text-slate-900">Курсы</h1>
           <p className="text-sm text-gray-500">{courses.length} курсов всего</p>
         </div>
-        <Button asChild>
-          <Link href="/admin/courses/new">+ Новый курс</Link>
-        </Button>
+        <div className="flex flex-col items-end gap-3">
+          <Button asChild>
+            <Link href="/admin/courses/new">+ Новый курс</Link>
+          </Button>
+          <CourseImportExport />
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">

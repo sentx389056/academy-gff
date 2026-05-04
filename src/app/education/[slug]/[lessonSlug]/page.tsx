@@ -2,7 +2,9 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/auth";
 import ModuleRenderer from "@/components/ModuleRenderer";
+import { Lock } from "lucide-react";
 
 type Module = { id: string; type: string; content: Record<string, unknown> };
 
@@ -15,12 +17,39 @@ export default async function LessonPage({ params }: Props) {
 
   const course = await prisma.course.findUnique({
     where: { slug, published: true },
-    include: { lessons: { orderBy: { order: "asc" } } },
+    include: {
+      lessons: { orderBy: { order: "asc" } },
+      groups: { select: { id: true } },
+    },
   });
   if (!course) notFound();
 
   const lesson = course.lessons.find((l) => l.slug === lessonSlug);
   if (!lesson) notFound();
+
+  // ── Access control ─────────────────────────────────────────
+  const session = await getSession();
+
+  if (course.accessLevel === "AUTH_REQUIRED" || course.accessLevel === "GROUP_ONLY") {
+    if (!session) {
+      return <AccessWall type="login" courseSlug={slug} lessonSlug={lessonSlug} courseTitle={course.title} />;
+    }
+  }
+
+  if (course.accessLevel === "GROUP_ONLY" && session) {
+    const groupIds = course.groups.map((g) => g.id);
+    const userInGroup = groupIds.length > 0
+      ? await prisma.user.findFirst({
+          where: { id: session.id, groups: { some: { id: { in: groupIds } } } },
+          select: { id: true },
+        })
+      : null;
+
+    if (!userInGroup) {
+      return <AccessWall type="group" courseSlug={slug} lessonSlug={lessonSlug} courseTitle={course.title} />;
+    }
+  }
+  // ──────────────────────────────────────────────────────────
 
   const currentIndex = course.lessons.findIndex((l) => l.id === lesson.id);
   const prevLesson = course.lessons[currentIndex - 1];
@@ -113,6 +142,82 @@ export default async function LessonPage({ params }: Props) {
               )}
             </div>
           </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function AccessWall({
+  type,
+  courseSlug,
+  lessonSlug,
+  courseTitle,
+}: {
+  type: "login" | "group";
+  courseSlug: string;
+  lessonSlug: string;
+  courseTitle: string;
+}) {
+  const loginUrl = `/login?next=/education/${courseSlug}/${lessonSlug}`;
+
+  return (
+    <>
+      <section className="bg-slate-900 py-10 text-white">
+        <div className="mx-auto max-w-[1170px] px-4">
+          <nav className="text-xs text-gray-400 mb-2">
+            <Link href="/" className="hover:text-white">Главная</Link>
+            {" / "}
+            <Link href="/education" className="hover:text-white">Образование</Link>
+            {" / "}
+            <Link href={`/education/${courseSlug}`} className="hover:text-white">{courseTitle}</Link>
+          </nav>
+          <h1 className="text-2xl md:text-3xl font-bold">Доступ ограничен</h1>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-[1170px] px-4 py-20 flex justify-center">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-8 h-8 text-red-800" />
+          </div>
+
+          {type === "login" ? (
+            <>
+              <h2 className="text-xl font-bold text-slate-900 mb-3">
+                Требуется вход в личный кабинет
+              </h2>
+              <p className="text-gray-500 mb-8">
+                Для просмотра уроков этого курса необходимо войти в личный кабинет.
+              </p>
+              <Link
+                href={loginUrl}
+                className="inline-flex items-center gap-2 bg-red-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors"
+              >
+                Войти в личный кабинет
+              </Link>
+              <p className="mt-4 text-sm text-gray-400">
+                <Link href={`/education/${courseSlug}`} className="hover:text-red-800">
+                  ← Вернуться к описанию курса
+                </Link>
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold text-slate-900 mb-3">
+                Нет доступа к этому курсу
+              </h2>
+              <p className="text-gray-500 mb-8">
+                Этот курс доступен только для определённых групп пользователей. Обратитесь к администратору для получения доступа.
+              </p>
+              <Link
+                href={`/education/${courseSlug}`}
+                className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-700 transition-colors"
+              >
+                ← Вернуться к описанию курса
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>

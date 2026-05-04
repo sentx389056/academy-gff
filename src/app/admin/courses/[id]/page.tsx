@@ -14,6 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Download } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Form } from "@/components/ui/form";
 import {
@@ -26,6 +28,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 type LookupItem = { id: number; name: string };
 type StaffItem = { id: number; name: string; position: string };
+type GroupItem = { id: number; name: string };
 type Lesson = { id: number; title: string; slug: string; order: number };
 
 type Course = {
@@ -45,8 +48,10 @@ type Course = {
   startDate: string | null;
   endDate: string | null;
   teachers: { id: number; name: string; position: string }[];
+  groups: { id: number; name: string }[];
   advantages: string[];
   requirements: string[];
+  accessLevel: "PUBLIC" | "AUTH_REQUIRED" | "GROUP_ONLY";
 };
 
 function slugify(text: string) {
@@ -87,11 +92,14 @@ export default function EditCoursePage() {
   const [teacherIds, setTeacherIds] = useState<number[]>([]);
   const [advantages, setAdvantages] = useState("");
   const [requirements, setRequirements] = useState("");
+  const [accessLevel, setAccessLevel] = useState<"PUBLIC" | "AUTH_REQUIRED" | "GROUP_ONLY">("PUBLIC");
+  const [groupIds, setGroupIds] = useState<number[]>([]);
 
   const [programTypes, setProgramTypes] = useState<LookupItem[]>([]);
   const [learningLevels, setLearningLevels] = useState<LookupItem[]>([]);
   const [learningFormats, setLearningFormats] = useState<LookupItem[]>([]);
   const [allStaff, setAllStaff] = useState<StaffItem[]>([]);
+  const [allGroups, setAllGroups] = useState<GroupItem[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -102,11 +110,13 @@ export default function EditCoursePage() {
     Promise.all([
       fetch("/api/lookup").then((r) => r.json()),
       fetch("/api/staff").then((r) => r.json()),
-    ]).then(([lookup, staff]) => {
+      fetch("/api/groups").then((r) => r.json()),
+    ]).then(([lookup, staff, groups]) => {
       setProgramTypes(lookup.programTypes ?? []);
       setLearningLevels(lookup.learningLevels ?? []);
       setLearningFormats(lookup.learningFormats ?? []);
       setAllStaff(staff ?? []);
+      setAllGroups(groups ?? []);
     });
   }, []);
 
@@ -133,6 +143,8 @@ export default function EditCoursePage() {
       setTeacherIds(data.teachers?.map((t) => t.id) ?? []);
       setAdvantages(Array.isArray(data.advantages) ? data.advantages.join("\n") : "");
       setRequirements(Array.isArray(data.requirements) ? data.requirements.join("\n") : "");
+      setAccessLevel(data.accessLevel ?? "PUBLIC");
+      setGroupIds(data.groups?.map((g: { id: number }) => g.id) ?? []);
     } catch {
       setError("Не удалось загрузить курс");
     } finally {
@@ -144,6 +156,12 @@ export default function EditCoursePage() {
 
   const toggleTeacher = (id: number) => {
     setTeacherIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const toggleGroup = (id: number) => {
+    setGroupIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
@@ -169,6 +187,8 @@ export default function EditCoursePage() {
           teacherIds,
           advantages: advantages.split("\n").map((s) => s.trim()).filter(Boolean),
           requirements: requirements.split("\n").map((s) => s.trim()).filter(Boolean),
+          accessLevel,
+          groupIds,
         }),
       });
       if (!res.ok) {
@@ -222,6 +242,12 @@ export default function EditCoursePage() {
           <h1 className="text-xl font-bold text-slate-900 mt-2">Редактировать курс</h1>
         </div>
         <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm" className="text-gray-600">
+            <a href={`/api/courses/export?ids=${courseId}`} download={`course-${slug}.xml`}>
+              <Download size={12} className="mr-1" />
+              XML
+            </a>
+          </Button>
           <Button asChild variant="outline" size="sm">
             <Link href={`/education/${slug}`} target="_blank">Просмотр <MoveRight size={12}/></Link>
           </Button>
@@ -398,6 +424,76 @@ export default function EditCoursePage() {
                 placeholder={"Высшее образование\nОпыт работы от 1 года"}
               />
             </div>
+          </div>
+
+          {/* Доступ к урокам */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <div>
+              <h2 className="font-semibold text-gray-800">Доступ к урокам</h2>
+              <p className="text-xs text-gray-500 mt-0.5">Кто сможет просматривать уроки этого курса</p>
+            </div>
+
+            <RadioGroup
+              value={accessLevel}
+              onValueChange={(v) => setAccessLevel(v as typeof accessLevel)}
+              className="space-y-2"
+            >
+              <label className="flex items-start gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer">
+                <RadioGroupItem value="PUBLIC" className="mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Открытый доступ</p>
+                  <p className="text-xs text-gray-500">Уроки доступны всем без ограничений</p>
+                </div>
+              </label>
+              <label className="flex items-start gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer">
+                <RadioGroupItem value="AUTH_REQUIRED" className="mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Только авторизованным</p>
+                  <p className="text-xs text-gray-500">Нужно войти в личный кабинет</p>
+                </div>
+              </label>
+              <label className="flex items-start gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer">
+                <RadioGroupItem value="GROUP_ONLY" className="mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Только определённым группам</p>
+                  <p className="text-xs text-gray-500">Доступ получают пользователи из выбранных групп</p>
+                </div>
+              </label>
+            </RadioGroup>
+
+            {accessLevel === "GROUP_ONLY" && (
+              <div className="pt-1">
+                <p className="text-xs font-medium text-gray-600 mb-2">Выберите группы с доступом:</p>
+                {allGroups.length === 0 ? (
+                  <p className="text-sm text-gray-400">
+                    Нет групп.{" "}
+                    <a href="/admin/groups" target="_blank" className="text-red-800 hover:underline">
+                      Создайте группы
+                    </a>{" "}
+                    в разделе «Группы пользователей».
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {allGroups.map((g) => (
+                      <label
+                        key={g.id}
+                        className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                          groupIds.includes(g.id)
+                            ? "border-red-300 bg-red-50"
+                            : "border-gray-100 hover:bg-gray-50"
+                        }`}
+                      >
+                        <Checkbox
+                          checked={groupIds.includes(g.id)}
+                          onCheckedChange={() => toggleGroup(g.id)}
+                        />
+                        <span className="text-sm text-gray-800">{g.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Преподаватели */}

@@ -9,7 +9,14 @@ datasource db {
 
 enum Role {
   USER
+  STUDENT
   ADMIN
+}
+
+enum AccessLevel {
+  PUBLIC
+  AUTH_REQUIRED
+  GROUP_ONLY
 }
 
 enum ApplicationStatus {
@@ -72,8 +79,17 @@ model User {
   password  String
   name      String
   role      Role     @default(USER)
+  groups    Group[]  @relation("UserGroups")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Group {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  users     User[]   @relation("UserGroups")
+  courses   Course[] @relation("CourseGroups")
+  createdAt DateTime @default(now())
 }
 
 model Course {
@@ -99,6 +115,8 @@ model Course {
   advantages    Json            @default("[]")
   requirements  Json            @default("[]")
   teachers      Staff[]         @relation("CourseTeachers")
+  accessLevel   AccessLevel     @default(PUBLIC)
+  groups        Group[]         @relation("CourseGroups")
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
